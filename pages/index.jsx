@@ -5,7 +5,7 @@ export default () => {
     )
 }
 
-export const getStaticProps = () => {
+export const getServerSideProps = () => {
     return {
         redirect: {
             destination: '/home'
