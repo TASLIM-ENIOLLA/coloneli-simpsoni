@@ -11,7 +11,7 @@ export default () => {
             <Header></Header>
             <section>
                 <div className="container-fluid">
-                    <div className="row" style = {{background: `linear-gradient(rgba(0,0,0,.2), rgba(0,0,0,.2)), url(/assets/images/demos/demo-21/slider/slide-1.png)`}}>
+                    <div className="row" style = {{backgroundSize: 'cover', backgroundPosition: 'center', backgroundImage: `linear-gradient(rgba(0,0,0,.2), rgba(0,0,0,.2)), url(/assets/images/demos/demo-21/slider/slide-1.png)`}}>
                         <div className="px-5 col-xs-12 col-md-6">
                             <div style={{minHeight: '600px'}} className = 'container intro flex-v a-i- j-c-c'>
                                 <div className="content">
