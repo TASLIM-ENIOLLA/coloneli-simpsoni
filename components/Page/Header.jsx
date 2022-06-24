@@ -23,7 +23,7 @@ export default () => {
                 </div>
                 <div className = 'user-select-0 row py-5 px-3 j-c-space-between a-i-c'>
                     <div className = 'flex-h a-i-c'>
-                        <div className = 'col-md-d-none pr-4'>
+                        <div className = 'col-lg-d-none pr-4'>
                             <span className = 'bi fa-3x bi-filter-left'></span>
                         </div>
                         <div>
@@ -31,7 +31,7 @@ export default () => {
                                 <img width = '130' src="/assets/images/demos/demo-21/logo-name.png"  />
                             </a>
                         </div>
-                        <div className = 'col-d-none col-md-d-block px-5'>
+                        <div className = 'col-d-none col-lg-d-block px-5'>
                             <a href="/home" className = 'text-uppercase mx-5'>home</a>
                             <a href="/shop" className = 'text-uppercase mx-5'>shop</a>
                             <a href="/about" className = 'text-uppercase mx-5'>about us</a>
