@@ -13,7 +13,7 @@ export default ({tabName}) => {
     return (
         <>
             <Header />
-            <section className = 'hero-bg' style = {{padding: '10%'}}>
+            <section className = 'hero-bg' style = {{padding: '10% 0%'}}>
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
