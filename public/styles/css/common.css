@@ -1,7 +1,7 @@
 :root{
     /* --secondary-theme-color: rgba(81, 97, 206, 1); */
-    --theme-color: rgb(243, 210, 22);
-    --theme-bg: rgb(243, 210, 22);
+    --theme-color: #dfc013;
+    --theme-bg: #dfc013;
 }
 /* @font-face{
     font-family: calibri;
