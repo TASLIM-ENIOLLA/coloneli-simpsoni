@@ -53,6 +53,12 @@ a{
     font-family: MontserratMedium !important;
     text-decoration: none;
 }
+.border-choco{
+    border: 2px solid #c96;
+}
+.text-choco{
+    color: #c96;
+}
 .active-menu{
     color: var(--theme-color);
     background: #7fd8b79e;
