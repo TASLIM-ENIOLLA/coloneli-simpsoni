@@ -15,11 +15,11 @@ export default () => {
                         <div className="px-5 col-xs-12 col-md-6">
                             <div style={{minHeight: '600px'}} className = 'container intro flex-v a-i- j-c-c'>
                                 <div className="content">
-                                    <h3>CLOTHES &amp; ACCESSORIES FOR</h3>
+                                    <h3 className  = 'h3-sm'>CLOTHES &amp; ACCESSORIES FOR</h3>
                                 </div>
                                 <div className="price">
-                                    <h3>MEN AND WOMEN</h3>
-                                    </div>
+                                    <h3 className  = 'h3-sm'>MEN AND WOMEN</h3>
+                                </div>
                                 <div className="action">
                                     <a href="/shop" className="btn btn-warning fo-s-16">
                                         SHOP NOW
@@ -226,6 +226,13 @@ export default () => {
                 </div>
             </section>
             <Footer></Footer>
+            <style jsx>{`
+                @media screen and (max-width: 576px){
+                    .h3-sm{
+                        font-size: 2rem;
+                    }
+                }
+            `}</style>
         </>
     )
 }
