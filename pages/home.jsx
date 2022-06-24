@@ -229,7 +229,7 @@ export default () => {
             <style jsx>{`
                 @media screen and (max-width: 576px){
                     .h3-sm{
-                        font-size: 2rem;
+                        font-size: 2rem !important;
                     }
                 }
             `}</style>
