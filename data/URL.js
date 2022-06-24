@@ -3,4 +3,5 @@ export default [
     {href: '/shop', name: 'shop'},
     {href: '/about', name: 'about us'},
     {href: '/contact', name: 'contact us'},
+    {href: '/login', name: 'login'},
 ]
