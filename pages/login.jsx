@@ -20,10 +20,10 @@ export default ({tabName}) => {
                             <div className = 'bg-white shadow mx-auto rounded-1x' style = {{maxWidth: '550px', padding: '50px 40px'}}>
                                 <div className = 'row py-4 a-i-c j-c-c'>
                                     <div className="col">
-                                        <button className="outline-0 text-uppercase bg-clear active-tab d-block w-100 p-4">Sign In</button>
+                                        <button onClick = {() => setTab('sign-in')} className={`outline-0 text-uppercase bg-clear d-block w-100 p-4 ${tab === 'sign-in' ? ' active-tab' : 'border-0'}`}>Sign In</button>
                                     </div>
                                     <div className="col">
-                                        <button className="outline-0 text-uppercase bg-clear border-0 d-block w-100 p-4">Register</button>
+                                        <button onClick = {() => setTab('register')} className={`outline-0 text-uppercase bg-clear d-block w-100 p-4 ${tab === 'register' ? ' active-tab' : 'border-0'}`}>Register</button>
                                     </div>
                                 </div>
                                 <div className = 'pt-5'>
@@ -46,12 +46,6 @@ export default ({tabName}) => {
                     border: 0;
                     border-bottom: 3px solid #c96;
                     color: #c96;
-                }
-                .text-choco{
-                    color: #c96;
-                }
-                .border-choco{
-                    border: 3px solid #c96;
                 }
             `}</style>
         </>
