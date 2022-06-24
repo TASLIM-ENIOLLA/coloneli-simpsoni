@@ -18,7 +18,7 @@ export default ({tabName}) => {
                     <div className="row">
                         <div className="col-12">
                             <div className = 'bg-white shadow mx-auto rounded-1x' style = {{maxWidth: '550px', padding: '50px 40px'}}>
-                                <div className = 'row py-4 a-i-c j-c-c border-bottom'>
+                                <div className = 'row pt-4 a-i-c j-c-c border-bottom'>
                                     <div className="col">
                                         <button onClick = {() => setTab('sign-in')} className={`outline-0 text-uppercase bg-clear d-block w-100 p-4 ${tab === 'sign-in' ? ' active-tab' : 'border-0'}`}>Sign In</button>
                                     </div>
