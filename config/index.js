@@ -7,5 +7,12 @@ export const server = {
 			? 'http://localhost:3000/'
 			: 'http://unknown'
 		)
+	},
+	backend: {
+		url: (
+			(dev)
+			? 'http://localhost:80/coloneli-simpsoni/'
+			: 'http://unknown'
+		)
 	}
 }

@@ -1,5 +1,5 @@
 {
-    "homepage": "www.nextblog.com",
+    "homepage": ".",
     "private": true,
     "scripts": {
         "dev": "next dev",

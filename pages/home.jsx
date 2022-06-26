@@ -175,8 +175,8 @@ export default () => {
                     </div>
                 </div>
             </section>
-            <section className = 'py-5'>
-                <div className="container-fluid">
+            {/* <section className = 'py-5'>
+                <div className="container">
                     <div className="row">
                         <div className="col-lg-3 col-sm-6">
                             <div className = 'my-4 border-bottom flex-h a-i-c'>
@@ -224,7 +224,7 @@ export default () => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
             <Footer></Footer>
             <style jsx>{`
                 @media screen and (max-width: 576px){

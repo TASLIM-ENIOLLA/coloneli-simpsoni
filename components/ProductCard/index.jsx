@@ -11,7 +11,7 @@ export const ProductCard = ({id = null, type = 'hot', images, rating, price, cat
     ]
 
     return (
-        <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-12">
+        <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div className={`border transit rounded-1x po-rel pb-4 mb-5 ${shadow ? 'shadow' : ''}`} onMouseOver = {() => setShadow(true)} onMouseLeave = {() => setShadow(false)}>
                 <div className="po-abs top-0 left-0 p-4">
                     <div className = {`px-3 py-2 text-capitalize rounded bg-${type === 'hot' ? 'danger' : 'warning'} text-white`}>{type}</div>
@@ -54,7 +54,7 @@ export const ShopProductCard = ({id = null, type = 'hot', images, rating, price,
     ]
 
     return (
-        <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-12">
+        <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div className={`border transit rounded-1x po-rel pb-4 mb-5 ${shadow ? 'shadow' : ''}`} onMouseOver = {() => setShadow(true)} onMouseLeave = {() => setShadow(false)}>
                 <div className="po-abs z-index-100 top-0 left-0 p-4">
                     <div className = {`px-3 py-2 text-capitalize rounded bg-${type === 'hot' ? 'danger' : 'warning'} text-white`}>{type}</div>

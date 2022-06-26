@@ -1,4 +1,4 @@
-export default () => {
+export default ({year}) => {
     return (
         <footer className = 'pt-5 border-top'>
             <div className="container">
@@ -40,6 +40,21 @@ export default () => {
                     </div>
                 </div>
             </div>
+            <div className="container">
+                <div className="row">
+                    <div className="col-12 border-top pt-4">
+                        <p className="text-center">Coloneli Simpsoni &copy; {year}. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
         </footer>
     )
+}
+
+export const getStaticProps = () => {
+    return {
+        props: {
+            year: new Date().getFullYear()
+        }
+    }
 }

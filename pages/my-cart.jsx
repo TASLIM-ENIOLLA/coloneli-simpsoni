@@ -12,7 +12,7 @@ export default () => {
                         <div className="col-12">
                             <div className = 'p-5 flex-v j-c-c a-i-c text-center' style = {{minHeight: '250px'}}>
                                 <div className = 'fa-3x bold'>Shopping Cart</div>
-                                <div className = 'fa-1x text-muted fo-s-16'>Here's all you need to know about us</div>
+                                <div className = 'fa-1x text-muted fo-s-16'>Your shopping cart</div>
                             </div>
                         </div>
                     </div>
