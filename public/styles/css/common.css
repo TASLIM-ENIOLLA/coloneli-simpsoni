@@ -400,6 +400,9 @@ a{
 .visibility-0{
     visibility: hidden;
 }
+.visibility-visible{
+    visibility: visible;
+}
 .slideInToTop{
     animation: slideInToTop .2s ease;
 }
