@@ -1,6 +1,27 @@
 import Head from 'next/head'
+import {useState, createElement, useEffect} from 'react'
+import GlobalStates from '../components/context/GlobalContext'
+import Alert from '../components/Popups/Alert'
 
-export default ({Component, pageProps}) => {
+export default ({Component, pageProps: {userCart, userData, isLoggedIn, ...pageProps}}) => {
+    const [cart, updateCart] = useState(userCart || {})
+    
+    useEffect(() => {
+        cookieStore.get('COLSON_ECOMMERCE').then(res => {
+            const cookieValue = res ? JSON.parse(res.value) : {}
+        
+            cookieStore.set({
+                name: 'COLSON_ECOMMERCE',
+                value: JSON.stringify({
+                    ...cookieValue,
+                    cart
+                }),
+                expires: new Date().getTime() + (356 * 24 * 3600),
+                path: '/' 
+            })
+        })
+    }, [cart])
+
     return (
         <>
             <Head>
@@ -30,7 +51,22 @@ export default ({Component, pageProps}) => {
                 <link rel="stylesheet" href="/styles/font-awesome/animate.css" />
                 <link rel="stylesheet" href="/b-icon/font/bootstrap-icons.css" />
             </Head>
-            <Component className = "po-rel" style = {{zIndex: 0}} {...pageProps} />
+            <GlobalStates globalStates = {{
+                cart: {
+                    state: cart,
+                    updater: updateCart
+                },
+                isLoggedIn: {
+                    state: isLoggedIn
+                },
+                userData: {
+                    state: userData,
+                },
+            }}>
+                <Alert>
+                    <Component className = "po-rel" style = {{zIndex: 0}} cart = {cart} {...pageProps} />
+                </Alert>
+            </GlobalStates>
         </>
     )
 }

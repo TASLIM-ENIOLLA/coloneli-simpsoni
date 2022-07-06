@@ -1,8 +1,26 @@
 import Header from '../components/Page/Header'
 import Footer from '../components/Page/Footer'
-import {ShopProductCard} from '../components/ProductCard'
+import {ProductCard} from '../components/ProductCard'
+import {useState, useEffect} from 'react'
+import {API_ROUTE} from '../config'
 
-export default () => {
+export default ({cart: unrefinedCart}) => {
+    const [bestSellers, setBestSellers] = useState([])
+
+    useEffect(async () => {
+        const req = await fetch(API_ROUTE.home)
+        const {type, data: {bestSellers}} = await req.json()
+
+        const bestSellersList = bestSellers.map(
+            e => {
+                e['isCarted'] = !!unrefinedCart[e.id]
+                return e
+            }
+        )
+
+        setBestSellers(bestSellersList)
+    }, [])
+
     return (
         <>
             {/* <TopRibbon></TopRibbon> */}
@@ -48,7 +66,7 @@ export default () => {
                         </div>
                         <div className="col-xs-12 col-sm-12 col-lg-auto">
                             <div className = 'mb-3 flex-h a-i-c'>
-                                Showing 5 of 56 products
+                                Showing {bestSellers.length} of {bestSellers.length} products
                             </div>
                         </div>
                         <div className="col-xs-12 col-sm-12 col-lg-auto">
@@ -64,39 +82,51 @@ export default () => {
             </section>
             <section>
                 <div className="container">
-                    <div className="row py-5">
-                        <ShopProductCard images = {[
-                            'assets/images/demos/demo-21/bestSellers/product-1-1.jpg',
-                            'assets/images/demos/demo-21/bestSellers/product-1-2.jpg'
-                        ]} price = '13595.34' category = 'shoes' name = 'nike renew arena' rating = '3' />
-                        <ShopProductCard images = {[
-                            'assets/images/demos/demo-21/bestSellers/product-1-1.jpg',
-                            'assets/images/demos/demo-21/bestSellers/product-1-2.jpg'
-                        ]} price = '13595.34' category = 'shoes' name = 'nike renew arena' rating = '3' />
-                        <ShopProductCard images = {[
-                            'assets/images/demos/demo-21/bestSellers/product-1-1.jpg',
-                            'assets/images/demos/demo-21/bestSellers/product-1-2.jpg'
-                        ]} price = '13595.34' category = 'shoes' name = 'nike renew arena' rating = '3' />
-                        <ShopProductCard images = {[
-                            'assets/images/demos/demo-21/bestSellers/product-1-1.jpg',
-                            'assets/images/demos/demo-21/bestSellers/product-1-2.jpg'
-                        ]} price = '13595.34' category = 'shoes' name = 'nike renew arena' rating = '3' />
-                        <ShopProductCard images = {[
-                            'assets/images/demos/demo-21/bestSellers/product-1-1.jpg',
-                            'assets/images/demos/demo-21/bestSellers/product-1-2.jpg'
-                        ]} price = '13595.34' category = 'shoes' name = 'nike renew arena' rating = '3' />
-                        <div className="col-12">
-                            <div className="py-5 text-center">
-                                <button className = 'px-5 py-3 d-inline-block text-uppercase border bg-clear rounded'>
-                                    <span>more products</span>
-                                    <span className = 'bi ml-2 bi-arrow-counterclockwise'></span>
-                                </button>
+                    <div className="row py-5">{(
+                        (bestSellers.length > 0)
+                        ? (
+                            <>
+                                {bestSellers.map(
+                                    ({name, id, category, isCarted, images, price, type}, key) => (
+                                        <ProductCard id = {id} key = {id} type = {type} images = {images.map(e => `${API_ROUTE.product_images}/${id}/${e}`)} price = {price} category = {category} isCarted = {isCarted} name = {name} rating = {Math.floor(((Math.random() * 10) % 5) + 1)} />
+                                    )
+                                )}
+                                <div className="col-12">
+                                    <div className="py-5 text-center">
+                                        <button className = 'px-5 py-3 d-inline-block text-uppercase border bg-clear rounded'>
+                                            <span>more products</span>
+                                            <span className = 'bi ml-2 bi-arrow-counterclockwise'></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </>
+                            
+                        )
+                        : (
+                            <div className="col-auto mx-auto text-c">
+                                <div className = 'animated pulse infinite'>
+                                    <span className="fa-5x bi bi-basket text-muted"></span>
+                                    <p>Restocking...</p>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        )
+                    )}</div>
                 </div>
             </section>
             <Footer></Footer>
         </>
     )
+}
+
+export async function getServerSideProps(context){
+    const {req: {cookies}} = context
+    const cookie = cookies['COLSON_ECOMMERCE'] || undefined
+
+    return {
+        props: {
+            userData: cookie ? JSON.parse(cookie) : null,
+            isLoggedIn: cookie && JSON.parse(cookie).id ? true : false,
+            userCart: cookie && JSON.parse(cookie).cart ? JSON.parse(cookie).cart : {}
+        }
+    }
 }

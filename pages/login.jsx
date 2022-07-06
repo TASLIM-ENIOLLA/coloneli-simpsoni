@@ -1,15 +1,120 @@
 import {useState} from 'react'
 import Header from '../components/Page/Header'
 import Footer from '../components/Page/Footer'
-
-import{Register, SignIn} from '../components/SignIn'
+import {Register, SignIn} from '../components/SignIn'
+import {useRouter} from 'next/router'
+import {API_ROUTE} from '../config'
 
 export default ({tabName}) => {
+    const {query: {continueURL}} = useRouter()
     const [tab, setTab] = useState(tabName)
     const tabs = {
-        'register': <Register />,
-        'sign-in': <SignIn />
+        'register': <Register onSubmit = {async (e) => {
+            const FORM = new FormData()
+            const formData = JSON.parse(e.target.getAttribute('form-data'))
+            
+            for(let prop in formData){
+                FORM.append(prop, formData[prop])
+            }
+            
+            const req = await fetch(API_ROUTE.register, {method: 'POST', body: FORM})
+            const {type, data, user_data} = await req.json()
+        
+            alert(data) || (() => {
+                if(type === 'success'){
+                    cookieStore.get('COLSON_ECOMMERCE').then(
+                        res => {
+                            if(res){
+                                let {value: existingCookieValue} = res
+                                existingCookieValue = JSON.parse(existingCookieValue)
+
+                                cookieStore.set({
+                                    name: 'COLSON_ECOMMERCE',
+                                    value: JSON.stringify({
+                                        ...existingCookieValue,
+                                        ...user_data,
+                                        account_type: 'customer'
+                                    }),
+                                    expires: new Date().getTime() + (356 * 24 * 3600),
+                                    path: '/' 
+                                })
+                                setTimeout(() => {
+                                    window.location.replace(continueURL)
+                                }, 500)
+                            }
+                            else{
+                                cookieStore.set({
+                                    name: 'COLSON_ECOMMERCE',
+                                    value: JSON.stringify({
+                                        ...user_data,
+                                        account_type: 'customer'
+                                    }),
+                                    expires: new Date().getTime() + (356 * 24 * 3600),
+                                    path: '/' 
+                                })
+                                setTimeout(() => {
+                                    window.location.replace(continueURL)
+                                }, 500)
+                            }
+                        }
+                    )
+                }
+            })()
+        }} />,
+        'sign-in': <SignIn onSubmit = {async (e) => {
+            const FORM = new FormData()
+            const formData = JSON.parse(e.target.getAttribute('form-data'))
+        
+            for(let prop in formData){
+                FORM.append(prop, formData[prop])
+            }
+        
+            const req = await fetch(API_ROUTE.signin, {method: 'POST', body: FORM})
+            const {type, data, user_data} = await req.json()
+        
+            alert(data) || (() => {
+                if(type === 'success'){
+                    cookieStore.get('COLSON_ECOMMERCE').then(
+                        res => {
+                            if(res){
+                                let {value: existingCookieValue} = res
+                                existingCookieValue = JSON.parse(existingCookieValue)
+
+                                cookieStore.set({
+                                    name: 'COLSON_ECOMMERCE',
+                                    value: JSON.stringify({
+                                        ...existingCookieValue,
+                                        ...user_data,
+                                        account_type: 'customer'
+                                    }),
+                                    expires: new Date().getTime() + (356 * 24 * 3600),
+                                    path: '/' 
+                                })
+                                setTimeout(() => {
+                                    window.location.replace(continueURL)
+                                }, 500)
+                            }
+                            else{
+                                cookieStore.set({
+                                    name: 'COLSON_ECOMMERCE',
+                                    value: JSON.stringify({
+                                        ...user_data,
+                                        account_type: 'customer'
+                                    }),
+                                    expires: new Date().getTime() + (356 * 24 * 3600),
+                                    path: '/' 
+                                })
+                                setTimeout(() => {
+                                    window.location.replace(continueURL)
+                                }, 500)
+                            }
+                        }
+                    )
+                }
+            })()
+        }} />
     }
+
     return (
         <>
             <Header />
@@ -18,13 +123,16 @@ export default ({tabName}) => {
                     <div className="row">
                         <div className="col-12">
                             <div className = 'bg-white shadow mx-auto rounded-1x' style = {{maxWidth: '550px', padding: '50px 40px'}}>
-                                <div className = 'row py-4 a-i-c j-c-c'>
-                                    <div className="col">
-                                        <button onClick = {() => setTab('sign-in')} className={`outline-0 text-uppercase bg-clear d-block w-100 p-4 ${tab === 'sign-in' ? ' active-tab' : 'border-0'}`}>Sign In</button>
+                                <div>
+                                    <div className = 'row col a-i-c m-0'>
+                                        <div className="col px-0">
+                                            <button onClick = {() => setTab('sign-in')} className={`outline-0 text-uppercase bg-clear d-block w-100 p-4 ${tab === 'sign-in' ? ' active-tab' : 'border-0'}`}>Sign In</button>
+                                        </div>
+                                        <div className="col px-0">
+                                            <button onClick = {() => setTab('register')} className={`outline-0 text-uppercase bg-clear d-block w-100 p-4 ${tab === 'register' ? ' active-tab' : 'border-0'}`}>Register</button>
+                                        </div>
                                     </div>
-                                    <div className="col">
-                                        <button onClick = {() => setTab('register')} className={`outline-0 text-uppercase bg-clear d-block w-100 p-4 ${tab === 'register' ? ' active-tab' : 'border-0'}`}>Register</button>
-                                    </div>
+                                    <hr className = 'm-0 border-top' />
                                 </div>
                                 <div className = 'pt-5'>
                                     {tabs[tab]}
@@ -52,11 +160,16 @@ export default ({tabName}) => {
     )
 }
 
-export const getServerSideProps = ({query: {tab}}) => {
-    console.log(tab)
+export const getServerSideProps = (context) => {
+    const {req: {cookies}, query: {tab}} = context
+    const cookie = cookies['COLSON_ECOMMERCE'] || undefined
+
     return {
         props: {
-            tabName: tab || 'sign-in'
+            tabName: tab || 'sign-in',
+            userData: cookie ? JSON.parse(cookie) : null,
+            isLoggedIn: cookie && JSON.parse(cookie).id ? true : false,
+            userCart: cookie && JSON.parse(cookie).cart ? JSON.parse(cookie).cart : {}
         }
     }
 }

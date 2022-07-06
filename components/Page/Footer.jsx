@@ -5,7 +5,7 @@ export default ({year}) => {
                 <div className="row">
                     <div className="col-12">
                         <div className = 'pb-3'>
-                            <a href="/home">
+                            <a href="/home" className = 'd-inline-block w-auto'>
                                 <img width = '130' src="/assets/images/demos/demo-21/logo-name.png" alt=""/>
                             </a>
                         </div>
@@ -21,8 +21,8 @@ export default ({year}) => {
                         <div className = 'mb-5'>
                             <p className = 'h3 bold text-dark'>Information</p>
                             <div className = 'py-3'>
-                                <a className = 'd-block mb-4' href="/">About Us</a>
-                                <a className = 'd-block mb-4' href="/">Contact Us</a>
+                                <a className = 'd-block mb-4' href="/about">About Us</a>
+                                <a className = 'd-block mb-4' href="/contact">Contact Us</a>
                                 <a className = 'd-block mb-4' href="/">Facebook Page</a>
                                 <a className = 'd-block mb-4' href="/">Instagram Page</a>
                             </div>
@@ -32,9 +32,9 @@ export default ({year}) => {
                         <div className = 'mb-5'>
                             <p className = 'h3 bold text-dark'>My Account</p>
                             <div className = 'py-3'>
-                                <a className = 'd-block mb-4' href="/">Sign In</a>
-                                <a className = 'd-block mb-4' href="/">View Cart</a>
-                                <a className = 'd-block mb-4' href="/">Help</a>
+                                <a className = 'd-block mb-4' href="/login">Sign In</a>
+                                <a className = 'd-block mb-4' href="/my-cart">View Cart</a>
+                                <a className = 'd-block mb-4' href="/help">Help</a>
                             </div>
                         </div>
                     </div>
@@ -43,18 +43,10 @@ export default ({year}) => {
             <div className="container">
                 <div className="row">
                     <div className="col-12 border-top pt-4">
-                        <p className="text-center">Coloneli Simpsoni &copy; {year}. All rights reserved.</p>
+                        <p className="text-center">Coloneli Simpsoni &copy; {new Date().getFullYear()}. All rights reserved.</p>
                     </div>
                 </div>
             </div>
         </footer>
     )
-}
-
-export const getStaticProps = () => {
-    return {
-        props: {
-            year: new Date().getFullYear()
-        }
-    }
 }

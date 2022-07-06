@@ -1,13 +1,19 @@
 import {useState} from 'react';
 
 export const SignIn = ({onSubmit}) => {
+    const [logginIn, setLoggingIn] = useState(false)
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     })
     
     return (
-        <form action = '' method = 'post' onSubmit = {(e) => e.preventDefault() && onSubmit()}>
+        <form action = '' method = 'post'  form-data = {JSON.stringify(formData)} onSubmit = {(e) => {
+            e.preventDefault()
+            setLoggingIn(true)
+            onSubmit(e)
+            setTimeout(() => setLoggingIn(false), 1000);
+        }}>
             <div className = 'mb-4'>
                 <p>Email address *</p>
                 <input value = {formData.email} onChange = {(e) => {
@@ -26,8 +32,17 @@ export const SignIn = ({onSubmit}) => {
                     })
                 }} type="password" className = 'd-block w-100 p-4 border rounded' />
             </div>
-            <div className = 'py-5'>
-                <input type="submit" value = 'LOG IN' className = 'd-inline-block px-5 py-4 border-choco text-choco bg-clear rounded' />
+            <div className = 'py-5'>{(
+                (logginIn)
+                ? (
+                    <button type = 'button' className = 'd-inline-block disabled transit px-5 py-3 outline-0 border-choco text-choco bg-clear rounded'>
+                        <span className = 'fa fa-spin bi bi-arrow-clockwise fa-2x'></span>
+                    </button>
+                )
+                : (
+                    <input type="submit" value = 'LOG IN' className = 'd-inline-block px-5 py-4 border-choco text-choco bg-clear rounded' />
+                )
+            )}
             </div>
             <style>{`
                 .border-choco{
@@ -43,6 +58,7 @@ export const SignIn = ({onSubmit}) => {
 
 
 export const Register = ({onSubmit}) => {
+    const [logginIn, setLoggingIn] = useState(false)
     const [formData, setFormData] = useState({
         f_name: '',
         l_name: '',
@@ -53,7 +69,12 @@ export const Register = ({onSubmit}) => {
     })
     
     return (
-        <form action = '' method = 'post' onSubmit = {(e) => e.preventDefault() && onSubmit()}>
+        <form action = '' method = 'post' form-data = {JSON.stringify(formData)} onSubmit = {(e) => {
+            e.preventDefault()
+            setLoggingIn(true)
+            onSubmit(e)
+            setTimeout(() => setLoggingIn(false), 1000);
+        }}>
             <div className = 'mb-4'>
                 <p>First Name *</p>
                 <input value = {formData.f_name} onChange = {(e) => {
@@ -101,15 +122,24 @@ export const Register = ({onSubmit}) => {
             </div>
             <div className = 'mb-4'>
                 <p>Confirm Password *</p>
-                <input value = {formData.password} onChange = {(e) => {
+                <input value = {formData.c_password} onChange = {(e) => {
                     setFormData({
                         ...formData,
                         c_password: e.target.value
                     })
                 }} type="password" className = 'd-block w-100 p-4 border rounded' />
             </div>
-            <div className = 'py-5'>
-                <input type="submit" value = 'REGISTER' className = 'd-inline-block px-5 py-4 border-choco text-choco bg-clear rounded' />
+            <div className = 'py-5'>{(
+                (logginIn)
+                ? (
+                    <button type = 'button' className = 'd-inline-block disabled transit px-5 py-3 outline-0 border-choco text-choco bg-clear rounded'>
+                        <span className = 'fa fa-spin bi bi-arrow-clockwise fa-2x'></span>
+                    </button>
+                )
+                : (
+                    <input type="submit" value = 'REGISTER' className = 'd-inline-block px-5 py-4 border-choco text-choco bg-clear rounded' />
+                )
+            )}
             </div>
             <style>{`
                 .border-choco{

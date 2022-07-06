@@ -6,7 +6,7 @@ import {server} from '../../config'
 
 const NumberInput = ({...props}) => {
     return (
-        <input {...props} type = 'number' onKeyPress = {e => isNaN(Number(e.key)) ? e.preventDefault() : true} />
+        <input {...props} type = 'text' onKeyPress = {e => isNaN(Number(e.key)) || (e.target.value.replace(/\,/g, '').length >= 11) ? e.preventDefault() : true} />
     )
 }
 
@@ -14,11 +14,12 @@ export default () => {
     const {route} = useRouter()
     const [formData, setFormData] = useState({
         name: '',
-        quantity: '',
+        quantity: 0,
+        gender: 'unisex',
         category: '',
-        price: '',
+        price: 0,
         description: '',
-        images: null
+        images: undefined
     })
 
     return (
@@ -31,7 +32,7 @@ export default () => {
 
                     for(let prop in formData){
                         if(prop === 'images'){
-                            if(formData[prop] !== null){
+                            if(!!formData[prop]){
                                 for(let file of formData[prop]){
                                     FORM.append(`${prop}[]`, file)
                                 }
@@ -45,25 +46,38 @@ export default () => {
                     const {type, data} = await req.json()
 
                     if(type === 'success'){
+                        alert('Product successfully added')
                         setFormData({
                             name: '',
                             quantity: '',
                             category: '',
                             price: '',
+                            gender: undefined,
                             description: '',
                             images: null
                         })
                     }
-
+                    else{
+                        alert('data')
+                    }
                     console.log(type, data)
                 }} method = 'POST' encType = 'multipart/form-data' className="row">
-                    <div className="col-lg-6 col-sm-12 mb-4">
+                    <div className="col-sm-12 mb-4">
                         <p className="mb-2 text-dark">Name *</p>
                         <input value = {formData.name} onChange = {e => setFormData({...formData, name: e.target.value})} type="text" className = 'd-block w-100 p-4 border rounded' />
                     </div>
                     <div className="col-lg-6 col-sm-12 mb-4">
                         <p className="mb-2 text-dark">Quantity *</p>
-                        <NumberInput value = {formData.quantity} onChange = {e => setFormData({...formData, quantity: e.target.value})} className = 'd-block w-100 p-4 border rounded' />
+                        <NumberInput value = {new Intl.NumberFormat().format(formData.quantity)} onChange = {e => setFormData({...formData, quantity: e.target.value.replace(/\,/g, '')})} className = 'd-block w-100 p-4 border rounded' />
+                    </div>
+                    <div className="col-lg-6 col-sm-12 mb-4">
+                        <p className="mb-2 text-dark">Sex *</p>
+                        <select value = {formData.gender} onChange = {e => setFormData({...formData, gender: e.target.value})} className = 'd-block text-capitalize w-100 p-4 border rounded'>
+                            <option className = 'text-capitalize' value="">--- select gender ---</option>
+                            <option className = 'text-capitalize' value="unisex">unisex</option>
+                            <option className = 'text-capitalize' value="male">male</option>
+                            <option className = 'text-capitalize' value="female">female</option>
+                        </select>
                     </div>
                     <div className="col-lg-6 col-sm-12 mb-4">
                         <p className="mb-2 text-dark">Category *</p>
@@ -77,7 +91,7 @@ export default () => {
                     </div>
                     <div className="col-lg-6 col-sm-12 mb-4">
                         <p className="mb-2 text-dark">Price ({currency}) *</p>
-                        <NumberInput value = {formData.price} onChange = {e => setFormData({...formData, price: e.target.value})} className = 'd-block w-100 p-4 border rounded' />
+                        <NumberInput value = {new Intl.NumberFormat().format(formData.price)} onChange = {e => setFormData({...formData, price: e.target.value.replace(/\,/g, '')})} className = 'd-block w-100 p-4 border rounded' />
                     </div>
                     <div className="col-sm-12 mb-4">
                         <p className="mb-2 text-dark">Description *</p>
