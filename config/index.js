@@ -5,14 +5,14 @@ export const server = {
 		url: (
 			(dev)
 			? 'http://localhost:3000/'
-			: 'https://coloneli-simpsoni.vercel.app/'
+			: 'http://unknown'
 		)
 	},
 	backend: {
 		url: (
 			(dev)
 			? 'http://localhost:80/coloneli-simpsoni/'
-			: 'colsonecommerce.000webhostapp.com/'
+			: 'http://unknown'
 		)
 	}
 }
@@ -25,4 +25,6 @@ export const API_ROUTE = {
 	product_data: `${server.backend.url}/php/processes/pages/product_data.php`,
 	newsletter: `${server.backend.url}/php/processes/data/newsletter.php`,
 	get_user_data: `${server.backend.url}/php/processes/data/GetUserData.php`,
+	contact_messages: `${server.backend.url}/php/processes/data/ContactMessages.php`,
+	place_order: `${server.backend.url}/php/processes/data/PlaceOrder.php`,
 }

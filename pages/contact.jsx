@@ -1,7 +1,19 @@
 import Header from '../components/Page/Header'
 import Footer from '../components/Page/Footer'
+import {useState, useEffect} from 'react'
+import {API_ROUTE} from '../config'
+import {notify} from '../components/Popups'
 
 export default () => {
+    const [awaitingRes, setAwaitingRes] = useState(false)
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
+    })
+
     return (
         <>
             <Header />
@@ -101,41 +113,62 @@ export default () => {
                             </div>
                         </div>
                         <div className="col-lg-9 mx-auto pt-5">
-                            <div className="row">
+                            <form onSubmit = {async (e) => {
+                                e.preventDefault()
+                                
+                                const FORM = new FormData()
+
+                                for(let name in formData){
+                                    FORM.append(name, formData[name])
+                                }
+
+                                const req = await fetch(API_ROUTE.contact_messages, {method: 'POST', body: FORM})
+                                const {type, data} = await req.json()
+
+                                notify({
+                                    message: data,
+                                    type: type === 'success' ? type : 'danger',
+                                })
+
+                                if(type === 'success'){
+                                    setFormData({ name: '', email: '', phone: '', subject: '', message: ''})
+                                }
+
+                            }} className="row">
                                 <div className = 'col-xs-12 col-sm-12 col-lg-4'>
                                     <div className = 'mb-5'>
-                                        <input type="text" className = 'd-block w-100 p-3 border rounded outline-0' placeholder = 'Name *' />
+                                        <input value = {formData.name} onChange = {(e) => setFormData({...formData, name: e.target.value})} type="text" className = 'd-block w-100 p-3 border rounded outline-0' placeholder = 'Name *' />
                                     </div>
                                 </div>
                                 <div className = 'col-xs-12 col-sm-12 col-lg-4'>
                                     <div className = 'mb-5'>
-                                        <input type="email" className = 'd-block w-100 p-3 border rounded outline-0' placeholder = 'Email *' />
+                                        <input value = {formData.email} onChange = {(e) => setFormData({...formData, email: e.target.value})} type="email" className = 'd-block w-100 p-3 border rounded outline-0' placeholder = 'Email *' />
                                     </div>
                                 </div>
                                 <div className = 'col-xs-12 col-sm-12 col-lg-4'>
                                     <div className = 'mb-5'>
-                                        <input type="phone" className = 'd-block w-100 p-3 border rounded outline-0' placeholder = 'Phone *' />
+                                        <input value = {formData.phone} onChange = {(e) => setFormData({...formData, phone: e.target.value})} type="phone" className = 'd-block w-100 p-3 border rounded outline-0' placeholder = 'Phone *' />
                                     </div>
                                 </div>
                                 <div className = 'col-xs-12 col-sm-12 col-lg-12'>
                                     <div className = 'mb-5'>
-                                        <input type="text" className = 'd-block w-100 p-3 border rounded outline-0' placeholder = 'Subject *' />
+                                        <input value = {formData.subject} onChange = {(e) => setFormData({...formData, subject: e.target.value})} type="text" className = 'd-block w-100 p-3 border rounded outline-0' placeholder = 'Subject *' />
                                     </div>
                                 </div>
                                 <div className = 'col-xs-12 col-sm-12 col-lg-12'>
                                     <div className = 'mb-5'>
-                                        <textarea className = 'd-block w-100 p-3 border resize-0 rounded outline-0' placeholder = 'Subject *' rows = '5'></textarea>
+                                        <textarea value = {formData.message} onChange = {(e) => setFormData({...formData, message: e.target.value})} className = 'd-block w-100 p-3 border resize-0 rounded outline-0' placeholder = 'Message *' rows = '5'></textarea>
                                     </div>
                                 </div>
                                 <div className = 'col-xs-12 col-sm-12 col-lg-12'>
                                     <div className = 'my-5 text-c'>
-                                        <button className = 'px-5 py-4 btn-warning bold letter-spacing-1 shadow theme-border btn text-uppercase rounded outline-0'>
+                                        <button type = 'submit' className = {`${awaitingRes ? 'disabled' : ''} px-5 transit py-4 btn-warning bold letter-spacing-1 shadow theme-border btn text-uppercase rounded outline-0`}>
                                             <span>submit</span>
                                             <span className = 'bi bi-arrow-right ml-3'></span>
                                         </button>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

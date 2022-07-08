@@ -1,4 +1,9 @@
+import {useRouter} from 'next/router'
+
 export default ({title = 'page'}) => {
+    const {back: goBack} = useRouter()
+
+    // console.log(router.back())
     return (
         <>
             <section>
@@ -29,8 +34,8 @@ export default ({title = 'page'}) => {
                     <div className="container">
                         <h1 className="error-title">Error 404</h1>
                         <p>We are sorry, the {title} you've requested is not available.</p>
-                        <a href="/home" className="btn btn-warning p-4">
-                            <span>BACK TO HOMEPAGE</span>
+                        <a onClick = {() => goBack()} className="btn btn-warning p-4">
+                            <span>GO BACK</span>
                             <i className="bi bi-arrow-right"></i>
                         </a>
                     </div>

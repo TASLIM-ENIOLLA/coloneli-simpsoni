@@ -1,7 +1,7 @@
-import {useState, useContext} from 'react'
+import {useState, useEffect, useContext} from 'react'
 import currency from '../currency';
 import {GlobalContext} from '../context/GlobalContext'
-import {AlertContext} from '../Popups/Alert'
+import {notify} from '../Popups'
 
 export const SeeMoreProducts = () => (
     <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
@@ -21,12 +21,15 @@ export const ProductCard = ({id = null, type = 'hot', isCarted = false, images, 
     const [shadow, setShadow] = useState(false)
     const [imageFlip, setImageFlip] = useState(0)
     const [carted, setCarted] = useState(isCarted)
-    const alert = useContext(AlertContext)
 
     images = images ? images : [
         'assets/images/demos/demo-21/bestSellers/product-1-1.jpg',
         'assets/images/demos/demo-21/bestSellers/product-1-2.jpg'
     ]
+
+    useEffect(() => {
+        cart[id] ? setCarted(true) : setCarted(false)
+    })
 
     return (
         <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
@@ -35,7 +38,7 @@ export const ProductCard = ({id = null, type = 'hot', isCarted = false, images, 
                     <div className = {`px-3 py-2 text-capitalize rounded bg-${type === 'hot' ? 'danger' : 'warning'} text-white`}>{type}</div>
                 </div>
                 <div className = 'p-2'>
-                    <a href={`/product/${id}`} onMouseOver = {() => setImageFlip(1)} onMouseLeave = {() => setImageFlip(0)} className = 'w-100 overflow-0 bg-light flex-v j-c-c' style = {{minHeight: '320px', maxHeight: '320px'}}>
+                    <a href={`/product/${id}`} onMouseOver = {() => images.length > 1 && setImageFlip(1)} onMouseLeave = {() => setImageFlip(0)} className = 'w-100 overflow-0 bg-light flex-v j-c-c' style = {{minHeight: '320px', maxHeight: '320px'}}>
                         <img src={images[imageFlip]} alt="Product image" className="product-image transit" />
                     </a>
                     <div className = 'text-center pt-3'>
@@ -53,7 +56,7 @@ export const ProductCard = ({id = null, type = 'hot', isCarted = false, images, 
                             (carted)
                             ? (
                                 <button onClick = {() => {
-                                    setCarted(false)
+                                    // setCarted(false)
                                     const newCart = {}
                                     
                                     Object.values(cart).forEach(
@@ -65,7 +68,10 @@ export const ProductCard = ({id = null, type = 'hot', isCarted = false, images, 
                                     )
                                     
                                     updateCart(newCart)
-                                    alert(`Product '${name}' removed from cart!`)
+                                    notify({
+                                        message: `Product '${name}' removed from cart!`,
+                                        type: 'success'
+                                    })
                                 }} className = 'btn text-uppercase p-3 bg-clear border text-warning outline-0 border-warning d-block col-10 mx-auto'>
                                     <span className="bi bi-cart-x mx-2"></span>
                                     remove from cart
@@ -73,12 +79,15 @@ export const ProductCard = ({id = null, type = 'hot', isCarted = false, images, 
                             )
                             : (
                                 <button onClick = {() => {
-                                    setCarted(true)
+                                    // setCarted(true)
                                     updateCart({
                                         ...cart,
                                         [id]: {id, name, price, image: images[0], quantity: '1'}
                                     })
-                                    alert(`Product '${name}' added to cart!`)
+                                    notify({
+                                        message: `Product '${name}' added to cart!`,
+                                        type: 'success'
+                                    })
                                 }} className = 'btn text-uppercase outline-0 p-3 btn-warning d-block col-10 mx-auto'>
                                     <span className="bi bi-cart2 mx-2"></span>
                                     add to cart
@@ -140,7 +149,10 @@ export const ShopProductCard = ({id = null, type = 'hot', isCarted = false, imag
                                     )
                                     
                                     updateCart(newCart)
-                                    alert(`Product '${name}' removed from cart!`)
+                                    notify({
+                                        message: `Product '${name}' removed from cart!`,
+                                        type: 'success'
+                                    })
                                 }} className = 'btn text-uppercase p-3 bg-clear border text-warning outline-0 border-warning d-block col-10 mx-auto'>
                                     <span className="bi bi-cart-x mx-2"></span>
                                     remove from cart
@@ -153,7 +165,10 @@ export const ShopProductCard = ({id = null, type = 'hot', isCarted = false, imag
                                         ...cart,
                                         [id]: {id, name, price, image: images[0], quantity: '1'}
                                     })
-                                    alert(`Product '${name}' added to cart!`)
+                                    notify({
+                                        message: `Product '${name}' added to cart!`,
+                                        type: 'success'
+                                    })
                                 }} className = 'btn text-uppercase outline-0 p-3 btn-warning d-block col-10 mx-auto'>
                                     <span className="bi bi-cart2 mx-2"></span>
                                     add to cart
@@ -188,7 +203,10 @@ export const ShopProductCard = ({id = null, type = 'hot', isCarted = false, imag
                             ? (
                                 <button title = 'Remove from cart' onClick = {() => removeFromCart({id: id, callback: () => {
                                     setCarted(false)
-                                    alert(`Product '${name}' removed from cart!`)
+                                    notify({
+                                        message: `Product '${name}' removed from cart!`,
+                                        type: 'success'
+                                    })
                                 }})} className = 'outline-0 py-2 bg-clear border-0 cursor-pointer col-6 px-1 flex-v border-right j-c-c a-i-c'>
                                     <span className = 'bi bi-cart-x'></span>
                                     <span className = 'text-capitalize one-line'>remove from cart</span>
@@ -197,7 +215,10 @@ export const ShopProductCard = ({id = null, type = 'hot', isCarted = false, imag
                             : (
                                 <button title = 'Add to cart' onClick = {() => addToCart({id: id, name: name, image: images[0], quantity: '1', callback: () => {
                                     setCarted(true)
-                                    alert(`Product '${name}' added to cart!`)
+                                    notify({
+                                        message: `Product '${name}' added to cart!`,
+                                        type: 'success'
+                                    })
                                 }})} className = 'outline-0 py-2 bg-clear border-0 cursor-pointer col-6 px-1 flex-v border-right j-c-c a-i-c'>
                                     <span className = 'bi bi-cart2'></span>
                                     <span className = 'text-capitalize one-line'>add to cart</span>
@@ -284,7 +305,10 @@ export const ShopProductCard = ({id = null, type = 'hot', isCarted = false, imag
     //                         ? (
     //                             <button title = 'Remove from cart' onClick = {() => removeFromCart({id: id, callback: () => {
     //                                 setCarted(false)
-    //                                 alert(`Product '${name}' removed from cart!`)
+    //                                 notify({
+    //                                      message: `Product '${name}' removed from cart!`,
+    //                                      type: 'success'
+    //                                  })
     //                             }})} className = 'outline-0 py-2 bg-clear border-0 cursor-pointer col-6 px-1 flex-v border-right j-c-c a-i-c'>
     //                                 <span className = 'bi bi-cart-x'></span>
     //                                 <span className = 'text-capitalize one-line'>remove from cart</span>
@@ -293,7 +317,10 @@ export const ShopProductCard = ({id = null, type = 'hot', isCarted = false, imag
     //                         : (
     //                             <button title = 'Add to cart' onClick = {() => addToCart({id: id, name: name, image: images[0], quantity: '1', callback: () => {
     //                                 setCarted(true)
-    //                                 alert(`Product '${name}' added to cart!`)
+    //                                 notify({
+    //                                      message: `Product '${name}' added to cart!`,
+    //                                      type: 'success'
+    //                                  })
     //                             }})} className = 'outline-0 py-2 bg-clear border-0 cursor-pointer col-6 px-1 flex-v border-right j-c-c a-i-c'>
     //                                 <span className = 'bi bi-cart2'></span>
     //                                 <span className = 'text-capitalize one-line'>add to cart</span>

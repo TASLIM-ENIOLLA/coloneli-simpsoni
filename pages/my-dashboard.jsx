@@ -113,7 +113,7 @@ const Logout = () => {
                                         cookieStore.set({
                                             name: 'COLSON_ECOMMERCE',
                                             value: JSON.stringify({cart}),
-                                            expires: new Date().getTime() + (356 * 24 * 3600),
+                                            expires: (new Date().getTime() + (356 * 24 * 3600 * 1000)),
                                             path: '/' 
                                         })
                                         setTimeout(() => {
@@ -124,7 +124,7 @@ const Logout = () => {
                                         cookieStore.set({
                                             name: 'COLSON_ECOMMERCE',
                                             value: '',
-                                            expires: new Date().getTime() + (356 * 24 * 3600),
+                                            expires: (new Date().getTime() + (356 * 24 * 3600 * 1000)),
                                             path: '/' 
                                         })
                                         setTimeout(() => {

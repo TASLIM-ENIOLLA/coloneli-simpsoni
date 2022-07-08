@@ -3,6 +3,7 @@ import Header from '../components/Page/Header'
 import Footer from '../components/Page/Footer'
 import currency from '../components/currency'
 import {GlobalContext} from '../components/context/GlobalContext'
+import {notify} from '../components/Popups'
 
 const CartContext = createContext()
 
@@ -107,7 +108,10 @@ const CartRow = ({id, name, price, quantity, image, updateCart}) => {
                                 )
 
                                 updateCart(newCart)
-                                alert(`Product '${name}' removed from cart!`) 
+                                notify({
+                                    message: `Product '${name}' removed from cart!`,
+                                    type: 'success'
+                                }) 
                             }
                         }}>
                             <span className = 'fa-2x bi bi-x'></span>
@@ -139,7 +143,10 @@ const CartBlock = ({id, name, price, quantity, image, updateCart}) => {
                         )
 
                         updateCart(newCart)
-                        alert(`Product '${name}' removed from cart!`) 
+                        notify({
+                            message: `Product '${name}' removed from cart!`,
+                            type: 'success'
+                        })
                     }
                 }}></span>
             </div>
@@ -314,7 +321,10 @@ export default () => {
                                             )
 
                                             updateCart(newCart)
-                                            alert(`Cart updated!`)
+                                            notify({
+                                                message: `Cart updated!`,
+                                                type: 'success'
+                                            })
                                         }} className={`d-block w-auto text-center text-uppercase py-3 px-5 w-100 ml-auto transit border bg-clear rounded`}>update cart</button>
                                     </div>
                                 </div>

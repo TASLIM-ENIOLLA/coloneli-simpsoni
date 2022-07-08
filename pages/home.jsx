@@ -4,7 +4,7 @@ import {ProductCard} from '../components/ProductCard'
 import {API_ROUTE, server} from '../config'
 import {useEffect, useState, useContext} from 'react'
 import {GlobalContext} from '../components/context/GlobalContext'
-import {AlertContext} from '../components/Popups/Alert'
+import {notify} from '../components/Popups'
 
 const newArrivalsCategory = ['all','men','women','shoes','accessories']
 
@@ -15,30 +15,25 @@ export default ({cart: unrefinedCart}) => {
     const [newArrivalsMain, setNewArrivalsMain] = useState([])
     const [NA, setNA] = useState('all')
     const [NL, setNL] = useState('')
-    const alert = useContext(AlertContext)
     
     useEffect(async () => {
         const req = await fetch(API_ROUTE.home)
         const {data: {bestSellers, newArrivals}} = await req.json()
 
-        bestSellers.forEach(each => each['isCarted'] = !!unrefinedCart[each.id])
-        newArrivals.forEach(each => each['isCarted'] = !!unrefinedCart[each.id])
-
-        setBestSellers(bestSellers)
-        setNewArrivals(bestSellers)
-        setNewArrivalsMain(bestSellers)
-
-        // console.log(bestSellers, newArrivals)
+        setBestSellers(bestSellers.map(
+            (each) => ({
+                ...each,
+                isCarted: !!unrefinedCart[each.id]
+            })
+        ))
+        setNewArrivals(newArrivals.map(
+            (each) => ({
+                ...each,
+                isCarted: !!unrefinedCart[each.id]
+            })
+        ))
     }, [])
     
-    useEffect(() => {
-        setBestSellers(bestSellers.map(each => {each['isCarted'] = !!refinedCart[each.id]; return each}))
-        setNewArrivals(bestSellers.map(each => {each['isCarted'] = !!refinedCart[each.id]; return each}))
-        setNewArrivalsMain(bestSellers.map(each => {each['isCarted'] = !!refinedCart[each.id]; return each}))
-
-        console.log(bestSellers, newArrivals)
-    }, [refinedCart])
-
     useEffect(() => {
         if(NA !== 'all'){
             setNewArrivals(newArrivalsMain.filter(e => e.category === NA))
@@ -86,7 +81,11 @@ export default ({cart: unrefinedCart}) => {
                         ? (
                             bestSellers.map(
                                 ({name, id, category, isCarted, images, price, type}, key) => (
-                                    <ProductCard id = {id} key = {id} type = {type} images = {images.map(e => `${API_ROUTE.product_images}/${id}/${e}`)} price = {price} category = {category} isCarted = {isCarted} name = {name} rating = {Math.floor(((Math.random() * 10) % 5) + 1)} />
+                                    (++key < 6)
+                                    ? (
+                                        <ProductCard id = {id} key = {id} type = {type} images = {images.map(e => `${API_ROUTE.product_images}/${id}/${e}`)} price = {price} category = {category} isCarted = {isCarted} name = {name} rating = {Math.floor(((Math.random() * 10) % 5) + 1)} />
+                                    )
+                                    : <></>
                                 )
                             )
                         )
@@ -94,7 +93,7 @@ export default ({cart: unrefinedCart}) => {
                             <div className="col-auto mx-auto text-c">
                                 <div className = 'animated pulse infinite'>
                                     <span className="fa-5x bi bi-basket text-muted"></span>
-                                    <p>Restocking...</p>
+                                    <p>Oops! We are currently restocking. Please check again soon.</p>
                                 </div>
                             </div>
                         )
@@ -168,18 +167,22 @@ export default ({cart: unrefinedCart}) => {
                     <div className="row">{(
                         (newArrivals.length > 0)
                         ? (
-                            newArrivalsMain.map(
+                            newArrivals.map(
                                 ({name, id, category, isCarted, images, price, type}, key) => (
-                                    <ProductCard id = {id} key = {id} type = {type} images = {images.map(e => `${API_ROUTE.product_images}/${id}/${e}`)} price = {price} category = {category} isCarted = {isCarted} name = {name} rating = {Math.floor(((Math.random() * 10) % 5) + 1)} />
+                                    (++key < 4)
+                                    ? (
+                                        <ProductCard id = {id} key = {id} type = {type} images = {images.map(e => `${API_ROUTE.product_images}/${id}/${e}`)} price = {price} category = {category} isCarted = {isCarted} name = {name} rating = {Math.floor(((Math.random() * 10) % 5) + 1)} />
+                                    )
+                                    : <></>
                                 )
                             )
                         )
                         : (
-                            <div className="col-auto mx-auto text-c pb-5 mb-5">
-                                <div className = 'fa-spin'>
-                                    <span className="fa-5x bi bi-grid-1x2 text-muted"></span>
+                            <div className="col-auto mx-auto text-c mb-5">
+                                <div className = 'animated pulse infinite'>
+                                    <span className="fa-5x bi bi-basket text-muted"></span>
+                                    <p>Oops! We are currently restocking. Please check again soon.</p>
                                 </div>
-                                <p>Restocking...</p>
                             </div>
                         )
                     )}</div>
@@ -205,7 +208,10 @@ export default ({cart: unrefinedCart}) => {
                                     e.preventDefault()
 
                                     if(NL.length < 1){
-                                        alert('Email address cannot be empty!')
+                                        notify({
+                                            message: 'Email address cannot be empty!',
+                                            theme: 'danger'
+                                        })
                                     }
                                     else{
                                         const FORM = new FormData()
@@ -213,13 +219,17 @@ export default ({cart: unrefinedCart}) => {
                                         const req = await fetch(`${API_ROUTE.newsletter}`, {method: 'POST', body: FORM})
                                         const {type, data} = await req.json()
 
-                                        alert(data)
                                         if(type === 'success'){
                                             setNL('')
                                         }
+
+                                        notify({
+                                            message: data,
+                                            theme: type === 'success' ? type : 'danger'
+                                        })
                                     }
                                 }} className = 'flex-h rounded overflow-0 bg-white'>
-                                    <input onChange = {(e) => setNL(e.target.value)} value = {NL} type="email" className = 'p-3 bg-clear outline-0 flex-1' />
+                                    <input onChange = {(e) => setNL(e.target.value)} value = {NL} type="email" className = 'p-4 bg-clear border-0 outline-0 flex-1' />
                                     <input type="submit" value="SUBSCRIBE" className = 'px-4 py-3 text-white border-0 outline-0 bg-warning '/>
                                 </form>
                             </div>

@@ -4,6 +4,7 @@ import Footer from '../components/Page/Footer'
 import {Register, SignIn} from '../components/SignIn'
 import {useRouter} from 'next/router'
 import {API_ROUTE} from '../config'
+import {notify} from '../components/Popups'
 
 export default ({tabName}) => {
     const {query: {continueURL}} = useRouter()
@@ -20,46 +21,50 @@ export default ({tabName}) => {
             const req = await fetch(API_ROUTE.register, {method: 'POST', body: FORM})
             const {type, data, user_data} = await req.json()
         
-            alert(data) || (() => {
-                if(type === 'success'){
-                    cookieStore.get('COLSON_ECOMMERCE').then(
-                        res => {
-                            if(res){
-                                let {value: existingCookieValue} = res
-                                existingCookieValue = JSON.parse(existingCookieValue)
-
-                                cookieStore.set({
-                                    name: 'COLSON_ECOMMERCE',
-                                    value: JSON.stringify({
-                                        ...existingCookieValue,
-                                        ...user_data,
-                                        account_type: 'customer'
-                                    }),
-                                    expires: new Date().getTime() + (356 * 24 * 3600),
-                                    path: '/' 
-                                })
-                                setTimeout(() => {
-                                    window.location.replace(continueURL)
-                                }, 500)
+            notify({
+                message: data,
+                type: type === 'success' ? type : 'danger',
+                callback: () => {
+                    if(type === 'success'){
+                        cookieStore.get('COLSON_ECOMMERCE').then(
+                            res => {
+                                if(res){
+                                    let {value: existingCookieValue} = res
+                                    existingCookieValue = JSON.parse(existingCookieValue)
+    
+                                    cookieStore.set({
+                                        name: 'COLSON_ECOMMERCE',
+                                        value: JSON.stringify({
+                                            ...existingCookieValue,
+                                            ...user_data,
+                                            account_type: 'customer'
+                                        }),
+                                        expires: (new Date().getTime() + (356 * 24 * 3600 * 1000)),
+                                        path: '/' 
+                                    })
+                                    setTimeout(() => {
+                                        window.location.replace(continueURL)
+                                    }, 500)
+                                }
+                                else{
+                                    cookieStore.set({
+                                        name: 'COLSON_ECOMMERCE',
+                                        value: JSON.stringify({
+                                            ...user_data,
+                                            account_type: 'customer'
+                                        }),
+                                        expires: (new Date().getTime() + (356 * 24 * 3600 * 1000)),
+                                        path: '/' 
+                                    })
+                                    setTimeout(() => {
+                                        window.location.replace(continueURL)
+                                    }, 500)
+                                }
                             }
-                            else{
-                                cookieStore.set({
-                                    name: 'COLSON_ECOMMERCE',
-                                    value: JSON.stringify({
-                                        ...user_data,
-                                        account_type: 'customer'
-                                    }),
-                                    expires: new Date().getTime() + (356 * 24 * 3600),
-                                    path: '/' 
-                                })
-                                setTimeout(() => {
-                                    window.location.replace(continueURL)
-                                }, 500)
-                            }
-                        }
-                    )
+                        )
+                    }
                 }
-            })()
+            })
         }} />,
         'sign-in': <SignIn onSubmit = {async (e) => {
             const FORM = new FormData()
@@ -72,46 +77,50 @@ export default ({tabName}) => {
             const req = await fetch(API_ROUTE.signin, {method: 'POST', body: FORM})
             const {type, data, user_data} = await req.json()
         
-            alert(data) || (() => {
-                if(type === 'success'){
-                    cookieStore.get('COLSON_ECOMMERCE').then(
-                        res => {
-                            if(res){
-                                let {value: existingCookieValue} = res
-                                existingCookieValue = JSON.parse(existingCookieValue)
-
-                                cookieStore.set({
-                                    name: 'COLSON_ECOMMERCE',
-                                    value: JSON.stringify({
-                                        ...existingCookieValue,
-                                        ...user_data,
-                                        account_type: 'customer'
-                                    }),
-                                    expires: new Date().getTime() + (356 * 24 * 3600),
-                                    path: '/' 
-                                })
-                                setTimeout(() => {
-                                    window.location.replace(continueURL)
-                                }, 500)
+            notify({
+                message: data,
+                type: type === 'success' ? type : 'danger',
+                callback: () => {
+                    if(type === 'success'){
+                        cookieStore.get('COLSON_ECOMMERCE').then(
+                            res => {
+                                if(res){
+                                    let {value: existingCookieValue} = res
+                                    existingCookieValue = JSON.parse(existingCookieValue)
+    
+                                    cookieStore.set({
+                                        name: 'COLSON_ECOMMERCE',
+                                        value: JSON.stringify({
+                                            ...existingCookieValue,
+                                            ...user_data,
+                                            account_type: 'customer'
+                                        }),
+                                        expires: (new Date().getTime() + (356 * 24 * 3600 * 1000)),
+                                        path: '/' 
+                                    })
+                                    setTimeout(() => {
+                                        window.location.replace(continueURL)
+                                    }, 500)
+                                }
+                                else{
+                                    cookieStore.set({
+                                        name: 'COLSON_ECOMMERCE',
+                                        value: JSON.stringify({
+                                            ...user_data,
+                                            account_type: 'customer'
+                                        }),
+                                        expires: (new Date().getTime() + (356 * 24 * 3600 * 1000)),
+                                        path: '/' 
+                                    })
+                                    setTimeout(() => {
+                                        window.location.replace(continueURL)
+                                    }, 500)
+                                }
                             }
-                            else{
-                                cookieStore.set({
-                                    name: 'COLSON_ECOMMERCE',
-                                    value: JSON.stringify({
-                                        ...user_data,
-                                        account_type: 'customer'
-                                    }),
-                                    expires: new Date().getTime() + (356 * 24 * 3600),
-                                    path: '/' 
-                                })
-                                setTimeout(() => {
-                                    window.location.replace(continueURL)
-                                }, 500)
-                            }
-                        }
-                    )
+                        )
+                    }
                 }
-            })()
+            })
         }} />
     }
 

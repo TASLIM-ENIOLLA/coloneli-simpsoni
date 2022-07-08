@@ -1,7 +1,6 @@
 import Head from 'next/head'
-import {useState, createElement, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import GlobalStates from '../components/context/GlobalContext'
-import Alert from '../components/Popups/Alert'
 
 export default ({Component, pageProps: {userCart, userData, isLoggedIn, ...pageProps}}) => {
     const [cart, updateCart] = useState(userCart || {})
@@ -16,7 +15,7 @@ export default ({Component, pageProps: {userCart, userData, isLoggedIn, ...pageP
                     ...cookieValue,
                     cart
                 }),
-                expires: new Date().getTime() + (356 * 24 * 3600),
+                expires: (new Date().getTime() + (356 * 24 * 3600 * 1000)),
                 path: '/' 
             })
         })
@@ -33,8 +32,8 @@ export default ({Component, pageProps: {userCart, userData, isLoggedIn, ...pageP
                 <meta name="description" content="Coloneli Simpsoni" />
                 <meta name="author" content="Coloneli Simpsoni" />
                 <link rel="shortcut icon" href="/assets/images/demos/demo-21/logo.png" />
-                <meta name="apple-mobile-web-app-title" content="Molla" />
-                <meta name="application-name" content="Molla" />
+                <meta name="apple-mobile-web-app-title" content="Colson Ecommerce" />
+                <meta name="application-name" content="Colson Ecommerce" />
                 <meta name="msapplication-TileColor" content="#cc9966" />
                 <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml" />
                 <meta name="theme-color" content="#ffffff" />
@@ -63,9 +62,8 @@ export default ({Component, pageProps: {userCart, userData, isLoggedIn, ...pageP
                     state: userData,
                 },
             }}>
-                <Alert>
-                    <Component className = "po-rel" style = {{zIndex: 0}} cart = {cart} {...pageProps} />
-                </Alert>
+                <Component className = "po-rel" style = {{zIndex: 0}} cart = {cart} {...pageProps} />
+                <div id = '__popup'></div>
             </GlobalStates>
         </>
     )

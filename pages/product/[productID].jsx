@@ -6,6 +6,7 @@ import {useState, useEffect, useContext} from 'react'
 import {useRouter} from 'next/router'
 import {GlobalContext} from '../../components/context/GlobalContext'
 import Component404 from '../../components/Page/404'
+import {notify} from '../../components/Popups'
 
 export const Rating = ({rating}) => {
     return (
@@ -60,16 +61,15 @@ export default () => {
     const [is404, set404] = useState()
     const {query: {productID}} = useRouter()
     const [largeProductImage, setLargeProductImage] = useState('')
-    const [carted, setCarted] = useState()
+    // const [carted, setCarted] = useState()
 
     useEffect(async () => {
         const req = await fetch(`${API_ROUTE.product_data}?productID=${productID}`)
-        const {type, data: {productData}} = await req.json()
+        const {type, data: productData} = await req.json()
 
         if(type === 'success'){
             set404(false)
             productData.isCarted = !!cart[productData?.id]
-            setCarted(productData.isCarted)
             setProductData(productData)
             setLargeProductImage(productData?.images[0])
         }
@@ -149,7 +149,7 @@ export default () => {
                                                 <p className = 'text-capitalize text-danger'>
                                                     <span className = 'h3 text-danger'>{currency}{new Intl.NumberFormat().format(productData?.price || 0)}</span>
                                                 </p>
-                                                <p className = 'mb-4'>
+                                                <p className = 'mb-4 text-capitalize'>
                                                     {productData?.description}
                                                 </p>
                                                 <div className="row">
@@ -157,7 +157,6 @@ export default () => {
                                                         (productData?.isCarted)
                                                         ? (
                                                             <button onClick = {() => {
-                                                                setCarted(false)
                                                                 const newCart = {}
                                                                 
                                                                 Object.values(cart).forEach(
@@ -169,7 +168,10 @@ export default () => {
                                                                 )
 
                                                                 updateCart(newCart)
-                                                                alert(`Product '${productData?.name}' removed from cart!`)
+                                                                notify({
+                                                                    message: `Product '${productData?.name}' removed from cart!`,
+                                                                    type: 'success'
+                                                                })
                                                             }} className = 'px-5 d-block py-3 theme-border rounded bg-clear outline-0'>
                                                                 <span className = 'bi bi-cart-x mr-3 theme-color'></span>
                                                                 <span className = 'text-uppercase theme-color'>remove from cart</span>
@@ -179,12 +181,14 @@ export default () => {
                                                             (productData?.isCarted === false)
                                                             ? (
                                                                 <button onClick = {() => {
-                                                                    setCarted(true)
                                                                     updateCart({
                                                                         ...cart,
                                                                         [productData?.id]: {id: productData?.id, name: productData?.name, price: productData?.price, image: `${API_ROUTE.product_images}/${productData?.id}/${productData?.images[0]}`, quantity: '1'}
                                                                     })
-                                                                    alert(`Product '${productData?.name}' added to cart!`)
+                                                                    notify({
+                                                                        message: `Product '${productData?.name}' added to cart!`,
+                                                                        type: 'success'
+                                                                    })
                                                                 }} className = 'px-5 d-block py-3 theme-border rounded bg-clear outline-0'>
                                                                     <span className = 'bi bi-cart2 mr-3 theme-color'></span>
                                                                     <span className = 'text-uppercase theme-color'>add to cart</span>
@@ -193,10 +197,10 @@ export default () => {
                                                             : <></>
                                                         )
                                                     }
-                                                        <button className = 'px-5 py-3 d-block theme-color mt-4 text-uppercase theme-border rounded bg-clear outline-0'>
+                                                        <a href = {`/checkout/${productData?.id}`} className = 'px-5 py-3 d-block theme-color mt-4 text-uppercase theme-border rounded bg-clear outline-0'>
                                                             <span className = 'bi bi-card-checklist mr-3 theme-color'></span>
-                                                            <span className = 'text-uppercase theme-color'>checkout</span>
-                                                        </button>
+                                                            <span className = 'text-uppercase theme-color'>buy now</span>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -208,9 +212,7 @@ export default () => {
                     )
                     : <></>
                 )
-            )}
-            
-            <Footer />
+            )}<Footer />
             <style jsx>{`
                 .max-h-400px{
                     max-height: 400px;

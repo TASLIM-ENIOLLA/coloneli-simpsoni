@@ -33,7 +33,6 @@ export default () => {
 
         setProductsListRoot(data)
         setProductsList(data)
-        // console.log(data)
     }, [])
 
     return (
