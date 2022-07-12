@@ -12,7 +12,7 @@ export const server = {
 		url: (
 			(dev)
 			? 'http://localhost:80/coloneli-simpsoni/'
-			: 'http://colsonecommerce2.000webhostapp.com/'
+			: 'https://colsonecommerce.000webhostapp.com/'
 		)
 	}
 }
