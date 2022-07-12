@@ -5,14 +5,14 @@ export const server = {
 		url: (
 			(dev)
 			? 'http://localhost:3000/'
-			: 'http://unknown'
+			: 'http://coloneli-simpsoni.vercel.app'
 		)
 	},
 	backend: {
 		url: (
 			(dev)
 			? 'http://localhost:80/coloneli-simpsoni/'
-			: 'https://colsonecommerce2.000webhostapp.com/'
+			: 'http://colsonecommerce2.000webhostapp.com/'
 		)
 	}
 }
