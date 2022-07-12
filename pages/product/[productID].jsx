@@ -196,12 +196,7 @@ export default () => {
                                                             )
                                                             : <></>
                                                         )
-                                                    }
-                                                        <a href = {`/checkout/${productData?.id}`} className = 'px-5 py-3 d-block theme-color mt-4 text-uppercase theme-border rounded bg-clear outline-0'>
-                                                            <span className = 'bi bi-card-checklist mr-3 theme-color'></span>
-                                                            <span className = 'text-uppercase theme-color'>buy now</span>
-                                                        </a>
-                                                    </div>
+                                                    }</div>
                                                 </div>
                                             </div>
                                         </div>

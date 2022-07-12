@@ -1,32 +1,53 @@
-import AdminDash from '../../components/Page/AdminDash'
+import AdminPageTemplate from '../../components/Admin/Page/AdminPageTemplate'
+import {useRouter} from 'next/router'
 
 export default () => {
+    const {back} = useRouter()
+
     return (
-        <AdminDash title = 'logout'>
-            <div className="container">
-                <div className="row py-5">
-                    <div className="col-12">
-                        <div className="bg-white animated slideInDown p-4 shadow rounded-2x mx-auto max-width-500px">
-                            <div className = 'py-5 text-c'>
-                                <p className = 'pt-5'>Are you sure you really want to logout?</p>
-                            </div>
-                            <div className="row">
-                                <div className="col-6">
-                                    <button className = 'd-block w-100 theme-border bg-clear rounded-1x text-capitalize theme-color p-4 flicker'>cancel</button>
-                                </div>
-                                <div className="col-6">
-                                    <button className = 'd-block w-100 theme-bg rounded-1x text-capitalize text-white p-4 flicker border shadow'>logout</button>
-                                </div>
-                            </div>
-                        </div>                    
+        <AdminPageTemplate>
+            <div className = "pt-4 px-3 animated-fast slideInDown">
+                <div style = {{
+                    maxWidth: "500px"
+                }} className = "shadow bg-white mx-auto py-5 px-3 rounded-2x">
+                    <div className = "text-c py-4 half-bold text-secondary">
+                        Are you sure you really want to logout?
+                    </div>
+                    <div className = "flex-h j-c-space-evenly a-i-c p-3">
+                        <button className = "border-0 outline-0 px-4 rounded py-3 bg-danger half-bold text-white text-capitalize mx-3" onClick = {
+                            (e) => (
+                                cookieStore.set({
+                                    name: 'COLSON_ECOMMERCE_ADMIN',
+                                    value: null,
+                                    expires: 'Thu, 01 Jan 1970 00:00:00 UTC',
+                                    path: '/' 
+                                }).then(e => window.location = '/admin/login')
+                            )
+                        }>logout</button>
+                        <button className = "theme-border outline-0 px-4 rounded py-3 bg-clear half-bold theme-color text-capitalize mx-3" onClick = {(e) => back()}>cancel</button>
                     </div>
                 </div>
             </div>
-            <style jsx>{`
-                .max-width-500px{
-                    max-width: 500px;
-                }
-            `}</style>
-        </AdminDash>
+        </AdminPageTemplate>
     )
+}
+
+export async function getServerSideProps(context){
+    const {req: {cookies}} = context
+    const cookie = cookies['COLSON_ECOMMERCE_ADMIN'] || undefined
+
+    if(!cookie){
+        return {
+            redirect: {
+                destination: '/admin/login'
+            }
+        }
+    }
+
+    return {
+        props: {
+            adminData: cookie ? JSON.parse(cookie) : null,
+            isLoggedIn: cookie && JSON.parse(cookie).id ? true : false,
+        }
+    }
 }

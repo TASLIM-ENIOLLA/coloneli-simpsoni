@@ -1,9 +1,10 @@
 import Header from '../components/Page/Header'
 import Footer from '../components/Page/Footer'
 import {ProductCard} from '../components/ProductCard'
-import {useState, useRef, useEffect} from 'react'
+import {useState, useMemo, useRef, useEffect} from 'react'
 import {useRouter} from 'next/router'
 import {API_ROUTE} from '../config'
+import currency from '../components/currency'
 
 const CheckBox = ({...props}) => {
     const [_check, setCheck] = useState(props.checked)
@@ -24,9 +25,32 @@ const CheckBox = ({...props}) => {
     )
 }
 
+const Slider = () => {
+    const [dragable, setDragable] = useState(false)
+    
+    useEffect(() => {
+        window.addEventListener('pointermove', ({x, y}) => {
+            if(dragable){
+                console.log(x, y)
+            }
+        })
+    }, [dragable])
+
+    return (
+        <div className = 'po-rel'>
+            <div style = {{height: '5px'}} className = 'bg-muted rounded-1x border'></div>
+            <span onPointerDown = {(e) => setDragable(true)} onPointerUp = {(e) => setDragable(false)} className="po-abs rounded-circle theme-bg" style = {{top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '12px', height: '12px'}}></span>
+        </div>
+    )
+}
+
 export default ({cart: unrefinedCart}) => {
     const [bestSellers, setBestSellers] = useState([])
-    const [filterBar, setFilterBar] = useState(false)
+    const [filterBar, setFilterBar] = useState(!false)
+    const [minMaxPrice, setMinMaxPrice] = useState({
+        minValue: 0,
+        maxValue: 0
+    })
     const {query: {category}} = useRouter()
     const [filters, setFilters] = useState({
         category: [],
@@ -45,6 +69,11 @@ export default ({cart: unrefinedCart}) => {
         )
 
         setBestSellers(bestSellersList)
+        setMinMaxPrice({
+            ...minMaxPrice,
+            minValue: Math.min(...bestSellersList.map(({price}) => price)),
+            maxValue: Math.max(...bestSellersList.map(({price}) => price)),
+        })
     }, [])
 
     return (
@@ -66,15 +95,15 @@ export default ({cart: unrefinedCart}) => {
                             <div className="text-uppercase">category</div>
                         </div>
                         <div className = 'pt-3'>
-                            <label className = 'd-block w-100 mb-3' htmlFor="">
-                                <CheckBox checked = {true} value = 'shoes' onChange = {({target: {checked, value}}) => console.log(checked, value)} />
+                            <label className = 'd-block w-100 mb-4' htmlFor="">
+                                <CheckBox checked = {true} value = 'shoes' onChange = {({target: {checked, value}}) => (checked, value)} />
                                 <span className = 'ml-3 text-capitalize'>Shoes</span>
                             </label>
-                            <label className = 'd-block w-100 mb-3' htmlFor="">
+                            <label className = 'd-block w-100 mb-4' htmlFor="">
                                 <CheckBox />
                                 <span className = 'ml-3 text-capitalize'>Clothes</span>
                             </label>
-                            <label className = 'd-block w-100 mb-3' htmlFor="">
+                            <label className = 'd-block w-100 mb-4' htmlFor="">
                                 <CheckBox />
                                 <span className = 'ml-3 text-capitalize'>Bags</span>
                             </label>
@@ -85,17 +114,32 @@ export default ({cart: unrefinedCart}) => {
                             <div className="text-uppercase">sex</div>
                         </div>
                         <div className = 'pt-3'>
-                            <label className = 'd-block w-100 mb-3' htmlFor="">
+                            <label className = 'd-block w-100 mb-4' htmlFor="">
                                 <CheckBox />
                                 <span className = 'ml-3 text-capitalize'>unisex</span>
                             </label>
-                            <label className = 'd-block w-100 mb-3' htmlFor="">
+                            <label className = 'd-block w-100 mb-4' htmlFor="">
                                 <CheckBox />
                                 <span className = 'ml-3 text-capitalize'>male</span>
                             </label>
-                            <label className = 'd-block w-100 mb-3' htmlFor="">
+                            <label className = 'd-block w-100 mb-4' htmlFor="">
                                 <CheckBox />
                                 <span className = 'ml-3 text-capitalize'>female</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div className = 'mb-5'>
+                        <div className="flex-h a-i-c j-c-space-between">
+                            <div className="text-uppercase">price range ({currency})</div>
+                        </div>
+                        <div className = 'pt-3'>
+                            <label className = 'd-block w-100 mb-4' htmlFor="">
+                                {/* <input type="range" min = {minMaxPrice.minValue} max = {minMaxPrice.maxValue} className = 'd-block w-100 bg-danger' /> */}
+                                <Slider />
+                                <div className="flex-h a-i-c j-c-space-between">
+                                    <div>{currency}{minMaxPrice.minValue}</div>
+                                    <div>{currency}{minMaxPrice.maxValue}</div>
+                                </div>
                             </label>
                         </div>
                     </div>
@@ -135,7 +179,7 @@ export default ({cart: unrefinedCart}) => {
                 <div className = 'container'>
                     <div className="row j-c-space-between a-i-c py-5">
                         <div className="col-xs-12 col-sm-12 col-lg-auto">
-                            <div className = 'mb-3 flex-h a-i-c' onClick = {() => setFilterBar(true)}>
+                            <div className = 'mb-3 cursor-pointer flex-h a-i-c' onClick = {() => setFilterBar(true)}>
                                 <span className = 'bi bi-list fo-s-20 mr-3'></span>
                                 <span className="text-uppercase">filter</span>
                             </div>
@@ -145,14 +189,6 @@ export default ({cart: unrefinedCart}) => {
                                 Showing {bestSellers.length} of {bestSellers.length} products
                             </div>
                         </div>
-                        {/* <div className="col-xs-12 col-sm-12 col-lg-auto">
-                            <div className = 'mb-3'>
-                                <span>Sort by: </span>
-                                <select className = 'text-capitalize border rounded p-3 ml-2'>
-                                    <option value="">most popular</option>
-                                </select>
-                            </div>
-                        </div> */}
                     </div>
                 </div>
             </section>

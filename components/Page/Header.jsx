@@ -42,56 +42,63 @@ export default () => {
                             )}</div>
                         </div>
                         <div className="col-auto ml-auto">
-                            <div className = 'py-4'>
-                                <a href="tel://5732021737" className = 'mx-3 text-uppercase'>
-                                    <span className = 'bi bi-telephone mx-2'></span>
-                                    5732021737
-                                </a>{(
+                            <div className = 'py-4'>{(
                                     (isLoggedIn)
                                     ? (
-                                        <span className = 'mx-3 cursor-pointer text-uppercase' onClick = {() => {
-                                            if(confirm('Are you sure you want to logout?')){
-                                                cookieStore.get('COLSON_ECOMMERCE').then(
-                                                    res => {
-                                                        if(res){
-                                                            let {value: existingCookieValue} = res
-                                                            existingCookieValue = JSON.parse(existingCookieValue)
-                                                            const {cart} = existingCookieValue
-                            
-                                                            cookieStore.set({
-                                                                name: 'COLSON_ECOMMERCE',
-                                                                value: JSON.stringify({cart}),
-                                                                expires: new Date().getTime() + (356 * 24 * 3600),
-                                                                path: '/' 
-                                                            })
-                                                            setTimeout(() => {
-                                                                window.location.reload()
-                                                            }, 500)
+                                        <>
+                                            <a href = '/my-dashboard' className = 'mx-3 text-uppercase'>
+                                                my dashboard
+                                            </a>
+                                            <span className = 'mx-3 cursor-pointer text-uppercase' onClick = {() => {
+                                                if(confirm('Are you sure you want to logout?')){
+                                                    cookieStore.get('COLSON_ECOMMERCE').then(
+                                                        res => {
+                                                            if(res){
+                                                                let {value: existingCookieValue} = res
+                                                                existingCookieValue = JSON.parse(existingCookieValue)
+                                                                const {cart} = existingCookieValue
+                                
+                                                                cookieStore.set({
+                                                                    name: 'COLSON_ECOMMERCE',
+                                                                    value: JSON.stringify({cart}),
+                                                                    expires: new Date().getTime() + (356 * 24 * 3600),
+                                                                    path: '/' 
+                                                                })
+                                                                setTimeout(() => {
+                                                                    window.location.reload()
+                                                                }, 500)
+                                                            }
+                                                            else{
+                                                                cookieStore.set({
+                                                                    name: 'COLSON_ECOMMERCE',
+                                                                    value: '',
+                                                                    expires: new Date().getTime() + (356 * 24 * 3600),
+                                                                    path: '/' 
+                                                                })
+                                                                setTimeout(() => {
+                                                                    window.location.reload()
+                                                                }, 500)
+                                                            }
                                                         }
-                                                        else{
-                                                            cookieStore.set({
-                                                                name: 'COLSON_ECOMMERCE',
-                                                                value: '',
-                                                                expires: new Date().getTime() + (356 * 24 * 3600),
-                                                                path: '/' 
-                                                            })
-                                                            setTimeout(() => {
-                                                                window.location.reload()
-                                                            }, 500)
-                                                        }
-                                                    }
-                                                )
-                                            }
-                                        }}>
-                                            <span className = 'bi bi-door-open mx-2'></span>
-                                            logout
-                                        </span>
+                                                    )
+                                                }
+                                            }}>
+                                                <span className = 'bi bi-door-open mx-2'></span>
+                                                logout
+                                            </span>
+                                        </>
                                     )
                                     : (
-                                        <a href={`/login?continueURL=${encodeURIComponent(route)}`} className = 'mx-3 text-uppercase'>
-                                            <span className = 'bi bi-person mx-2'></span>
-                                            login
-                                        </a>
+                                        <>
+                                            <a href="tel://5732021737" className = 'mx-3 text-uppercase'>
+                                                <span className = 'bi bi-telephone mx-2'></span>
+                                                5732021737
+                                            </a>
+                                            <a href={`/login?continueURL=${encodeURIComponent(route)}`} className = 'mx-3 text-uppercase'>
+                                                <span className = 'bi bi-person mx-2'></span>
+                                                login
+                                            </a>
+                                        </>
                                     )
                                 )}
                             </div>

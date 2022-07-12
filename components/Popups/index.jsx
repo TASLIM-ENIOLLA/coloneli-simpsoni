@@ -35,7 +35,9 @@ export const notify = ({message = '', callback, type = 'light', duration = 3000}
                 typeof callback === 'function' ? (
                     callback(type)
                 ) : false
-                ReactDOM.unmountComponentAtNode(document.querySelector(`#__popup`))
+                ReactDOM.unmountComponentAtNode(
+                    document.querySelector(`#__popup`)
+                )
             }, duration);
         }, [])
         

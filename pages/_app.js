@@ -1,24 +1,29 @@
 import Head from 'next/head'
 import React, {useState, useEffect} from 'react'
 import GlobalStates from '../components/context/GlobalContext'
+import {useRouter} from 'next/router'
 
-export default ({Component, pageProps: {userCart, userData, isLoggedIn, ...pageProps}}) => {
+export default ({Component, pageProps: {userCart, userData, adminData, isLoggedIn, ...pageProps}}) => {
     const [cart, updateCart] = useState(userCart || {})
-    
+    const [_adminData, updateAdminData] = useState(adminData)
+    const {route} = useRouter()
+
     useEffect(() => {
-        cookieStore.get('COLSON_ECOMMERCE').then(res => {
-            const cookieValue = res ? JSON.parse(res.value) : {}
-        
-            cookieStore.set({
-                name: 'COLSON_ECOMMERCE',
-                value: JSON.stringify({
-                    ...cookieValue,
-                    cart
-                }),
-                expires: (new Date().getTime() + (356 * 24 * 3600 * 1000)),
-                path: '/' 
+        if(!/^\/admin/.test(route)){
+            cookieStore.get('COLSON_ECOMMERCE').then(res => {
+                const cookieValue = res ? JSON.parse(res.value) : {}
+            
+                cookieStore.set({
+                    name: 'COLSON_ECOMMERCE',
+                    value: JSON.stringify({
+                        ...cookieValue,
+                        cart
+                    }),
+                    expires: (new Date().getTime() + (356 * 24 * 3600 * 1000)),
+                    path: '/' 
+                })
             })
-        })
+        }
     }, [cart])
 
     return (
@@ -61,6 +66,9 @@ export default ({Component, pageProps: {userCart, userData, isLoggedIn, ...pageP
                 userData: {
                     state: userData,
                 },
+                adminData: {
+                    state: _adminData,
+                }
             }}>
                 <Component className = "po-rel" style = {{zIndex: 0}} cart = {cart} {...pageProps} />
                 <div id = '__popup'></div>

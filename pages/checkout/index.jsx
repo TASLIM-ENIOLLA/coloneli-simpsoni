@@ -20,7 +20,7 @@ export default () => {
         state_or_region: '',
         postal_or_zipcode: '',
         notes: '',
-        order_list: JSON.stringify(Object.values(cart).map(({id, quantity, price}) => ({id, quantity, price})))
+        order_list: JSON.stringify(Object.values(cart).map(({id, quantity, name, price}) => ({id, quantity, name, price})))
     })
     const [isOrdering, setIsOrdering] = useState(false)
 
@@ -172,9 +172,28 @@ export default () => {
                                         </div>
                                     </div>
                                     <div className = 'pt-3'>
-                                        <a onClick = {() => (!isLoggedIn) ? notify({message: 'You have to be logged in before placing orders!', type: 'notify'}) : setIsOrdering(true) | placeOrder(formData).then(
-                                            ({type, data}) => setIsOrdering(false) | notify({message: data, type: type === 'success' ? type : 'danger'}) | updateCart({}) | notify({message: 'Cart cleared!', type: 'success'}) | setFormData({ f_name: '', l_name: '', phone: '', email: '', country: 'nigeria', address: '', customer_id: userID, town_or_city: '', state_or_region: '', postal_or_zipcode: '', notes: '', order_list: []}) 
-                                        )} className={`${isOrdering ? 'disabled' : ''} d-block cursor-pointer text-uppercase p-3 w-100 border-choco text-center text-choco bg-clear rounded`}>{(
+                                        <a onClick = {() => {
+                                            if(!isLoggedIn){
+                                                notify({message: 'You have to be logged in before placing orders!', type: 'notify'})
+                                            }
+                                            else{
+                                                setIsOrdering(true)
+                                                placeOrder(formData).then(
+                                                    ({type, data}) => {
+                                                        setIsOrdering(false)
+                                                        notify({
+                                                            message: data, 
+                                                            type: type === 'success' ? type : 'danger', 
+                                                            callback: () => {
+                                                                notify({message: 'Cart cleared!', type: 'success'})
+                                                                updateCart({})
+                                                                setFormData({ f_name: '', l_name: '', phone: '', email: '', country: 'nigeria', address: '', customer_id: userID, town_or_city: '', state_or_region: '', postal_or_zipcode: '', notes: '', order_list: []})
+                                                            }
+                                                        })
+                                                    } 
+                                                )
+                                            }
+                                        }} className={`${isOrdering ? 'disabled' : ''} d-block cursor-pointer text-uppercase p-3 w-100 border-choco text-center text-choco bg-clear rounded`}>{(
                                             (isOrdering)
                                             ? (
                                                 <span className = 'fa fa-spin bi bi-arrow-clockwise fa-2x'></span>
