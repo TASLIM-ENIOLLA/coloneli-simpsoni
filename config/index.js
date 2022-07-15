@@ -5,7 +5,7 @@ export const server = {
 		url: (
 			(dev)
 			? 'http://localhost:3000/'
-			: 'http://unknown'
+			: 'http://coloneli-simpsoni.vercel.app'
 		)
 	},
 	backend: {
