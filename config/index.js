@@ -13,7 +13,7 @@ export const server = {
 			(dev)
 			// ? 'http://192.168.137.1:80/coloneli-simpsoni/'
 			? 'http://localhost:80/coloneli-simpsoni/'
-			: 'http://unknown'
+			: 'https://colsonecommerce.000webhostapp.com/'
 		)
 	}
 }
