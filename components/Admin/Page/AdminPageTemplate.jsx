@@ -7,7 +7,6 @@ export default ({children, title}) => {
     const {asPath, back, ...rest} = useRouter()
     const [showSideBar, setShowSideBar] = useState()
     const {globalStates: {adminData: {state: {f_name, id, profile_img}}}} = useContext(GlobalContext)
-    // console.log(profile_img)
 
     return (
         <div className = "vh100 vw100 po-rel flex-h bg-light text-dark">
@@ -90,12 +89,12 @@ export default ({children, title}) => {
 const SideBar = () => {
     const {asPath} = useRouter()
     const urlAndTitle = [
-        {url: "/admin/home", title: "Home"},
-        {url: "/admin/add-product", title: "Add Product"},
-        {url: "/admin/all-products", title: "All Products"},
-        {url: "/admin/orders", title: "Orders"},
-        {url: "/admin/payments", title: "Payments"},
-        {url: "/admin/logout", title: "Logout"},
+        {url: "/admin/home", title: "Home", icon: <span className = 'fa-2x mr-3 bi bi-house-fill'></span>},
+        {url: "/admin/add-product", title: "Add Product", icon: <span className = 'fa-2x mr-3 bi bi-calendar-plus-fill'></span>},
+        {url: "/admin/all-products", title: "All Products", icon: <span className = 'fa-2x mr-3 bi bi-collection'></span>},
+        {url: "/admin/orders", title: "Orders", icon: <span className = 'fa-2x mr-3 bi bi-receipt-cutoff'></span>},
+        {url: "/admin/payments", title: "Payments", icon: <span className = 'fa-2x mr-3 bi bi-credit-card-2-back-fill'></span>},
+        {url: "/admin/logout", title: "Logout", icon: <span className = 'fa-2x mr-3 bi bi-door-open-fill'></span>},
     ]
     return (
         <>
@@ -126,7 +125,7 @@ const SideBar = () => {
                 }
                 .active-menu{
                     border-left: 5px solid #e1e40e;
-                    background: #e1e40e70;
+                    background: #e1e40e4a;
                 }
             `}</style>
         </>

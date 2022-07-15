@@ -1,19 +1,15 @@
 import Header from '../components/Page/Header'
 import Footer from '../components/Page/Footer'
 import {ProductCard} from '../components/ProductCard'
-import {API_ROUTE, server} from '../config'
+import {API_ROUTE} from '../config'
 import {useEffect, useState, useContext} from 'react'
 import {GlobalContext} from '../components/context/GlobalContext'
 import {notify} from '../components/Popups'
-
-const newArrivalsCategory = ['all','men','women','shoes','accessories']
 
 export default ({cart: unrefinedCart}) => {
     const {globalStates: {cart: {state: refinedCart}}} = useContext(GlobalContext)
     const [bestSellers, setBestSellers] = useState([])
     const [newArrivals, setNewArrivals] = useState([])
-    const [newArrivalsMain, setNewArrivalsMain] = useState([])
-    const [NA, setNA] = useState('all')
     const [NL, setNL] = useState('')
     
     useEffect(async () => {
@@ -33,15 +29,6 @@ export default ({cart: unrefinedCart}) => {
             })
         ))
     }, [])
-    
-    useEffect(() => {
-        if(NA !== 'all'){
-            setNewArrivals(newArrivalsMain.filter(e => e.category === NA))
-        }
-        else{
-            setNewArrivals(newArrivalsMain)
-        }
-    }, [NA])
 
     return (
         <>
@@ -85,7 +72,7 @@ export default ({cart: unrefinedCart}) => {
                                     ? (
                                         <ProductCard id = {id} key = {id} type = {type} images = {images.map(e => `${API_ROUTE.product_images}/${id}/${e}`)} price = {price} category = {category} isCarted = {isCarted} name = {name} rating = {Math.floor(((Math.random() * 10) % 5) + 1)} />
                                     )
-                                    : <></>
+                                    : undefined
                                 )
                             )
                         )
@@ -157,11 +144,6 @@ export default ({cart: unrefinedCart}) => {
             <section className = 'py-5'>
                 <div className="p-5">
                     <div className="fa-3x bold text-center">NEW ARRIVALS</div>
-                    <div className = 'text-center pt-3'>{(
-                        newArrivalsCategory.map((each, key) => (
-                            <div key = {key} onClick = {() => setNA(each)} className = {`px-3 py-2 text-capitalize transit rounded bg-${(each === NA) ? 'success' : 'warning'} d-inline-block cursor-pointer mx-3 text-white mb-3`}>{each}</div>
-                        ))
-                    )}</div>
                 </div>
                 <div className="container py-4">
                     <div className="row">{(
@@ -173,7 +155,7 @@ export default ({cart: unrefinedCart}) => {
                                     ? (
                                         <ProductCard id = {id} key = {id} type = {type} images = {images.map(e => `${API_ROUTE.product_images}/${id}/${e}`)} price = {price} category = {category} isCarted = {isCarted} name = {name} rating = {Math.floor(((Math.random() * 10) % 5) + 1)} />
                                     )
-                                    : <></>
+                                    : undefined
                                 )
                             )
                         )

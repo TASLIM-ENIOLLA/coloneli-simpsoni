@@ -6,7 +6,8 @@ import currency from '../currency'
 import {GlobalContext} from '../context/GlobalContext'
 
 export default () => {
-    const {route} = useRouter()
+    const {asPath} = useRouter()
+    
     let {
         globalStates: {
             cart: {
@@ -18,7 +19,8 @@ export default () => {
             },
             userData: {
                 state: userData
-            }
+            },
+            cookieStore
         }
     } = useContext(GlobalContext)
     
@@ -94,7 +96,7 @@ export default () => {
                                                 <span className = 'bi bi-telephone mx-2'></span>
                                                 5732021737
                                             </a>
-                                            <a href={`/login?continueURL=${encodeURIComponent(route)}`} className = 'mx-3 text-uppercase'>
+                                            <a href={`/login?continueURL=${encodeURIComponent(asPath)}`} className = 'mx-3 text-uppercase'>
                                                 <span className = 'bi bi-person mx-2'></span>
                                                 login
                                             </a>
@@ -122,7 +124,7 @@ export default () => {
                             <div className = 'col-d-none col-lg-d-block px-5'>{
                                 URL.map(
                                     ({href, name}, index) => (
-                                        <a key = {index} href={href} className = {`text-uppercase mx-5 ${route === href ? 'active-link': ''}`}>{name}</a>
+                                        <a key = {index} href={href} className = {`text-uppercase mx-5 ${asPath === href ? 'active-link': ''}`}>{name}</a>
                                     )
                                 )
                             }
@@ -132,7 +134,7 @@ export default () => {
                             <div className="d-inline-block px-4 po-rel">
                                 <div className="flex-h a-i-c ttt-parent rounded-2x">
                                     <a href = '' onClick = {(e) => e.preventDefault()} className = 'ttt cursor-pointer'>
-                                        <span className="bi ml-3 bi-search fo-s-18"></span>
+                                        <span className="bi ml-3 bi-search fo-s-22"></span>
                                     </a>
                                     <div className="ttt-menu">
                                         <input type="search" className = 'd-none border-0 w-100 p-3 outline-0 bg-clear' placeholder = 'Search here...' />
@@ -141,7 +143,7 @@ export default () => {
                             </div>
                             <div className="d-inline-block px-4 po-rel">
                                 <a href = '' onClick = {(e) => e.preventDefault()} className = 'ttt cursor-pointer'>
-                                    <span className="bi bi-cart2 fo-s-18"></span>
+                                    <span className="bi bi-cart2 fo-s-22"></span>
                                     <span style = {{transform: 'scale(.85)', top: '-50%', width: '18px', height: '18px'}} className = 'po-abs flex-v j-c-c a-i-c text-white text-c right-0 rounded-circle theme-bg'>{cart.length}</span>
                                 </a>
                                 <div className = {`po-abs top-150pcent right-0 bg-white z-index-1000 animated fadeIn rounded shadow vw80 max-width-400px p-3 ttt-more`}>

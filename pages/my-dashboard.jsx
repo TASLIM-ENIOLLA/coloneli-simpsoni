@@ -117,7 +117,6 @@ const UserInfo = () => {
                 type: type === 'success' ? type : 'danger',
                 callback: () => (type === 'success') && setIsUpdated(false)
             })
-            console.log(type, data)
         }} className = 'row'>
             <div className="col-12">{(
                 (Object.values(formData).includes(''))
@@ -215,6 +214,7 @@ const UserInfo = () => {
     )
 }
 const Logout = () => {
+    const {globalStates: {cookieStore}} = useContext(GlobalContext)
     const {updater} = useContext(PageContext)
 
     return (

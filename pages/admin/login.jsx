@@ -1,6 +1,7 @@
-import {useState} from 'react'
+import {useState, useContext} from 'react'
 import {API_ROUTE} from '../../config'
 import {notify} from '../../components/Popups'
+import {GlobalContext} from '../../components/context/GlobalContext'
 
 const Login = async (formData) => {
     const FORM = new FormData()
@@ -14,6 +15,7 @@ const Login = async (formData) => {
 }
 
 export default () => {
+    const {globalStates: {cookieStore}} = useContext(GlobalContext)
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -21,8 +23,8 @@ export default () => {
 
     return (
         <div className="vh100 vw100 bg-white overflow-y-auto">
-            <div className = 'px-3 py-5 flex-v a-i-c j-c-c' style = {{minHeight: '100%'}}>
-                <div className = 'p-5 bg-light shadow rounded-2x' style = {{maxWidth: '500px', width: '100%'}}>
+            <div className = 'px-4 py-5 flex-v a-i-c' style = {{minHeight: '100%'}}>
+                <div className = 'p-5 bg-light shadow mt-5 rounded-2x' style = {{maxWidth: '500px', width: '100%'}}>
                     <div>
                         <img className = 'mx-auto' src="/assets/images/demos/demo-21/logo-name.png" width = '125' />
                     </div>

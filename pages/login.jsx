@@ -1,12 +1,14 @@
-import {useState} from 'react'
+import {useState, useContext, useEffect} from 'react'
 import Header from '../components/Page/Header'
 import Footer from '../components/Page/Footer'
 import {Register, SignIn} from '../components/SignIn'
 import {useRouter} from 'next/router'
 import {API_ROUTE} from '../config'
 import {notify} from '../components/Popups'
+import {GlobalContext} from '../components/context/GlobalContext'
 
 export default ({tabName}) => {
+    const {globalStates: {cookieStore}} = useContext(GlobalContext)
     const {query: {continueURL}} = useRouter()
     const [tab, setTab] = useState(tabName)
     const tabs = {
@@ -20,7 +22,7 @@ export default ({tabName}) => {
             
             const req = await fetch(API_ROUTE.register, {method: 'POST', body: FORM})
             const {type, data, user_data} = await req.json()
-        
+
             notify({
                 message: data,
                 type: type === 'success' ? type : 'danger',
@@ -73,7 +75,6 @@ export default ({tabName}) => {
             for(let prop in formData){
                 FORM.append(prop, formData[prop])
             }
-        
             const req = await fetch(API_ROUTE.signin, {method: 'POST', body: FORM})
             const {type, data, user_data} = await req.json()
         

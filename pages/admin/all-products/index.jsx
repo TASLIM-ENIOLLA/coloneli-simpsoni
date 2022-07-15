@@ -122,7 +122,7 @@ export default () => {
                         )
                         : (
                             <tr>
-                                <td colSpan = '7'>
+                                <td colSpan = '9'>
                                     <div className="p-5 text-center text-capitalize bold letter-spacing-1">
                                         Product list is empty!
                                     </div>

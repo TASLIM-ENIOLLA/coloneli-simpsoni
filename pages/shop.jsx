@@ -46,7 +46,7 @@ const Slider = () => {
 
 export default ({cart: unrefinedCart}) => {
     const [bestSellers, setBestSellers] = useState([])
-    const [filterBar, setFilterBar] = useState(!false)
+    const [filterBar, setFilterBar] = useState(false)
     const [minMaxPrice, setMinMaxPrice] = useState({
         minValue: 0,
         maxValue: 0

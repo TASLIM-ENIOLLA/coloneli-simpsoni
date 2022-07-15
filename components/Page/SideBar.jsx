@@ -18,8 +18,8 @@ export default ({children}) => {
                 <div className = 'h-100 w-100 bg-material-dark max-width-350px animated slideInLeft'>
                     <div className="px-3 py-5">
                         <div className = 'py-3'>
-                            <div onClick = {() => setSideBarState(false)} style = {{width: '50px', height: '50px'}} className = 'flex-h a-i-c j-c-c border ml-auto rounded'>
-                                <span className = 'bi bi-x fa-3x text-white'></span>
+                            <div onClick = {() => setSideBarState(false)} style = {{width: '40px', height: '40px'}} className = 'flex-h a-i-c j-c-c border ml-auto rounded'>
+                                <span className = 'bi bi-x fa-2x text-white'></span>
                             </div>
                         </div>
                         <div className="py-5">{

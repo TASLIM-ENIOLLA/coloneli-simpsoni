@@ -112,8 +112,12 @@ export default ({productID}) => {
                                         <a href = {`/admin/edit-product/${productsData?.id}`} className = 'text-center d-block bold letter-spacing-1 w-100 bg-success text-white p-4 rounded shadow border-0 outline-0'>Edit Product</a>
                                     </div>
                                     <div className="col-md-6 px-2 mb-4">
-                                        <button onClick = {() => DeleteProduct(productsData?.id).then(
-                                            ({type, data}) => notify({message: data, type: type !== 'success' ? 'danger' : type, callback: () => type === 'success' ? router.back() : false})
+                                        <button onClick = {() => (
+                                            (confirm('Do you really want to remove this product?'))
+                                            ? DeleteProduct(productsData?.id).then(
+                                                ({type, data}) => notify({message: data, type: type !== 'success' ? 'danger' : type, callback: () => type === 'success' ? router.back() : false})
+                                            )
+                                            : undefined
                                         )} className = 'text-center d-block bold letter-spacing-1 w-100 bg-danger text-white p-4 rounded shadow border-0 outline-0'>Remove Product</button>
                                     </div>
                                 </div>
@@ -166,13 +170,7 @@ export async function getServerSideProps(context){
     const {resolvedUrl, req: {cookies}, query: {productID}} = context
     const cookie = cookies['COLSON_ECOMMERCE_ADMIN'] || undefined
 
-    const paths = ['/admin/add-product', '/admin/edit-product/[productID]']
-
-    if(!paths.includes(resolvedUrl)){
-        return {notFound: true}
-    }
-
-    else if(!cookie){
+    if(!cookie){
         return {
             redirect: {
                 destination: '/admin/login'

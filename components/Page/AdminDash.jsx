@@ -3,7 +3,7 @@ export default ({children, title}) => {
     return (
         <>
             <section className = 'vh100 vw100 flex-h'>
-                <SideBar />
+                {/* <SideBar /> */}
                 <div className="flex-1 flex-v">
                     <div className = 'flex-h px-5 py-4 d-none a-i-c'>
                         <div>

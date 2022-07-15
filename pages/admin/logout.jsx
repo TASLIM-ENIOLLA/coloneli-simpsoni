@@ -1,7 +1,10 @@
 import AdminPageTemplate from '../../components/Admin/Page/AdminPageTemplate'
 import {useRouter} from 'next/router'
+import {GlobalContext} from '../../components/context/GlobalContext'
+import {useContext} from 'react'
 
 export default () => {
+    const {globalStates: {cookieStore}} = useContext(GlobalContext)
     const {back} = useRouter()
 
     return (

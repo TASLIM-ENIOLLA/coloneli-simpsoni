@@ -11,8 +11,7 @@ export const SignIn = ({onSubmit}) => {
         <form action = '' method = 'post'  form-data = {JSON.stringify(formData)} onSubmit = {(e) => {
             e.preventDefault()
             setLoggingIn(true)
-            onSubmit(e)
-            setTimeout(() => setLoggingIn(false), 1000);
+            onSubmit(e).then(e => setTimeout(() => setLoggingIn(false), 1000))
         }}>
             <div className = 'mb-4'>
                 <p>Email address *</p>
@@ -72,8 +71,7 @@ export const Register = ({onSubmit}) => {
         <form action = '' method = 'post' form-data = {JSON.stringify(formData)} onSubmit = {(e) => {
             e.preventDefault()
             setLoggingIn(true)
-            onSubmit(e)
-            setTimeout(() => setLoggingIn(false), 1000);
+            onSubmit(e).then(e => setTimeout(() => setLoggingIn(false), 1000))
         }}>
             <div className = 'mb-4'>
                 <p>First Name *</p>

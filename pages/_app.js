@@ -7,13 +7,53 @@ export default ({Component, pageProps: {userCart, userData, adminData, isLoggedI
     const [cart, updateCart] = useState(userCart || {})
     const [_adminData, updateAdminData] = useState(adminData)
     const {route} = useRouter()
+    const globalStatesValue = {
+        cart: {
+            state: cart,
+            updater: updateCart
+        },
+        isLoggedIn: {
+            state: isLoggedIn
+        },
+        userData: {
+            state: userData,
+        },
+        adminData: {
+            state: _adminData,
+        },
+        cookieStore: {
+            get: (name) => {
+                return new Promise(
+                    (res) => {
+                        const DOC_COOKIE = decodeURIComponent(document.cookie).split(/\;\s?/)
+                        
+                        DOC_COOKIE.forEach(
+                            (eachCookie) => {
+                                const [cookieName, cookieValue] = eachCookie.split('=')
+                                if(cookieName === name){
+                                    res({value: cookieValue})
+                                }
+                            }
+                        )
+
+                        res()
+                    }
+                )
+            },
+            set: ({name, value, expires, path}) => {
+                return new Promise((res) => {
+                    res(document.cookie = `${name}=${value};expires=${expires};path=${path}`)
+                })
+            }
+        }
+    }
 
     useEffect(() => {
         if(!/^\/admin/.test(route)){
-            cookieStore.get('COLSON_ECOMMERCE').then(res => {
+            globalStatesValue.cookieStore.get('COLSON_ECOMMERCE').then(res => {
                 const cookieValue = res ? JSON.parse(res.value) : {}
             
-                cookieStore.set({
+                globalStatesValue.cookieStore.set({
                     name: 'COLSON_ECOMMERCE',
                     value: JSON.stringify({
                         ...cookieValue,
@@ -55,21 +95,7 @@ export default ({Component, pageProps: {userCart, userData, adminData, isLoggedI
                 <link rel="stylesheet" href="/styles/font-awesome/animate.css" />
                 <link rel="stylesheet" href="/b-icon/font/bootstrap-icons.css" />
             </Head>
-            <GlobalStates globalStates = {{
-                cart: {
-                    state: cart,
-                    updater: updateCart
-                },
-                isLoggedIn: {
-                    state: isLoggedIn
-                },
-                userData: {
-                    state: userData,
-                },
-                adminData: {
-                    state: _adminData,
-                }
-            }}>
+            <GlobalStates globalStates = {globalStatesValue}>
                 <Component className = "po-rel" style = {{zIndex: 0}} cart = {cart} {...pageProps} />
                 <div id = '__popup'></div>
             </GlobalStates>
