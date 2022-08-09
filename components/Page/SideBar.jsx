@@ -15,7 +15,7 @@ export default ({children}) => {
         <SideBarContext.Provider value = {{state: sideBarState, updater: setSideBarState}}>
             {children}
             <div className = {`po-fixed animated fadeIn bg-dark-lucent vh100 pr-5 z-index-10000 vw100 top-0 left-0 ${sideBarState ? '' : 'd-none'}`}>
-                <div className = 'h-100 w-100 bg-material-dark max-width-350px animated slideInLeft'>
+                <div className = 'h-100 w-100 bg-material-dark max-width-300px animated slideInLeft'>
                     <div className="px-3 py-5">
                         <div className = 'py-3'>
                             <div onClick = {() => setSideBarState(false)} style = {{width: '40px', height: '40px'}} className = 'flex-h a-i-c j-c-c border ml-auto rounded'>
@@ -42,8 +42,8 @@ export default ({children}) => {
                 .bg-dark-lucent{
                     background: rgba(0,0,0,.6)
                 }
-                .max-width-350px{
-                    max-width: 350px;
+                .max-width-300px{
+                    max-width: 300px;
                 }
                 .bg-material-dark{
                     background: #333;

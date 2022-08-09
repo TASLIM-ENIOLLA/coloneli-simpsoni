@@ -11,8 +11,8 @@ export const server = {
 	backend: {
 		url: (
 			(dev)
-			// ? 'http://192.168.137.1:80/coloneli-simpsoni/'
-			? 'http://localhost:80/coloneli-simpsoni/'
+			? 'http://192.168.137.1:80/coloneli-simpsoni/'
+			// ? 'http://localhost:80/coloneli-simpsoni/'
 			: 'https://colsonecommerce.000webhostapp.com/'
 		)
 	}

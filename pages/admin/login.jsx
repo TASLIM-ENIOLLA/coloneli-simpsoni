@@ -34,22 +34,25 @@ export default () => {
                     <form onSubmit = {(e) => {
                         e.preventDefault()
 
-                        Login(formData).then(({type, user_data: {id, f_name, profile_img, email}, data}) => {
+                        Login(formData).then(({type, user_data, data}) => {
                             notify({
                                 message: data,
-                                type: type === 'success' ? type : 'error',
+                                type: type === 'success' ? type : 'danger',
                                 callback: () => {
-                                    setFormData({
-                                        email: '',
-                                        password: ''
-                                    })
-                                    cookieStore.set({
-                                        name: 'COLSON_ECOMMERCE_ADMIN',
-                                        value: JSON.stringify({id, f_name, email, profile_img}),
-                                        expires: (new Date().getTime() + (356 * 24 * 3600 * 1000)),
-                                        path: '/' 
-                                    })
-                                    window.location = '/admin/home'
+                                    if(type === 'success'){
+                                        const {id, f_name, profile_img, email} = user_data
+                                        setFormData({
+                                            email: '',
+                                            password: ''
+                                        })
+                                        cookieStore.set({
+                                            name: 'COLSON_ECOMMERCE_ADMIN',
+                                            value: JSON.stringify({id, f_name, email, profile_img}),
+                                            expires: (new Date().getTime() + (356 * 24 * 3600 * 1000)),
+                                            path: '/' 
+                                        })
+                                        window.location = '/admin/home'
+                                    }
                                 }
                             })
                         })
